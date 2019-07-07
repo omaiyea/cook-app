@@ -1,0 +1,95 @@
+*{
+    box-sizing: border-box;
+}
+
+h2, h3{
+    font-family: 'Oswald', Sans-Serif;
+    font-size: 4em;
+    text-transform: uppercase; 
+    text-align: center;
+}
+
+legend, h4{
+    font-family: 'Oswald', Sans-Serif;
+    font-size: 3em;
+    text-transform: uppercase; 
+    text-align: center;
+}
+
+p{
+    font-family: 'Quattrocento', Serif;
+    font-size: 1.7em;
+    text-align: center;
+}
+input, label{
+    font-family: 'Quattrocento', Serif;
+    font-size: 1.5em;
+}
+
+ul, li, ul li{
+    font-family: 'Quattrocento', Serif;
+    font-size: 1.2em;   
+}
+/*restyle the checkbox to look like a button by removing original styling then replacing it*/
+/*still keep accesilbe*/
+.radio-buttons input[type="checkbox"] {
+    width: 6em;
+    height: 2em;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    border-radius:4px;
+    border:1px solid #eeeeee;
+}
+
+ .radio-buttons input:checked{
+    background-color: #eee;
+}
+
+/*add pointer to whole button*/
+.radio-buttons input, label:hover{
+    cursor: pointer;
+}
+
+/*special formatting to make checkbox options look like buttons*/
+.radio-buttons label{
+    display: inline-flex; /*display the options in a row */
+    justify-content: center; /*center the label's span text*/
+    margin: 5px; /*space out elements so they're easier to read*/
+}
+
+.radio-buttons span{
+    position: absolute; /*position the labels inside the boxes*/
+    align-self: center; /*center the labels inside the boxes*/
+}
+
+/*style buttons throughout the app */
+input[type="submit"], input[type="button"]{
+    display: block;
+    margin: auto;
+    width: 75%;
+    margin-top: 5px;
+    background-color: black;
+    color: white;
+    font-size: 2em;
+}
+
+input[type="submit"], input[type="button"]:hover{
+    cursor: pointer;
+}
+
+/*style input boxes when user is selecting city*/
+/*needs a differenty styling than the radio buttons*/
+.text-inputs label{
+    margin-top: 5px;
+    display: block;
+}
+
+/*center image*/
+.food-choices img{
+    display: block;
+    margin: auto;
+    max-width: 90%;
+    max-height: 90%;
+}
