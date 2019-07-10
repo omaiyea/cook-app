@@ -2,34 +2,41 @@
     box-sizing: border-box;
 }
 
-h2, h3{
+h2, legend, h3{
     font-family: 'Oswald', Sans-Serif;
+    text-transform: uppercase; 
+    text-align: center;
+}
+
+h2{
     font-size: 4em;
-    text-transform: uppercase; 
-    text-align: center;
 }
 
-legend, h4{
-    font-family: 'Oswald', Sans-Serif;
+legend, h3{
     font-size: 3em;
-    text-transform: uppercase; 
+}
+
+p, input, label, ul, li, sub{
+    font-family: 'Quattrocento', Serif;
     text-align: center;
 }
 
-p{
-    font-family: 'Quattrocento', Serif;
+p {
     font-size: 1.7em;
-    text-align: center;
 }
+
 input, label{
-    font-family: 'Quattrocento', Serif;
     font-size: 1.5em;
 }
 
-ul, li, ul li{
-    font-family: 'Quattrocento', Serif;
+ul, li{
     font-size: 1.2em;   
 }
+
+sub {
+    font-size: 1em;
+}
+
 /*restyle the checkbox to look like a button by removing original styling then replacing it*/
 /*still keep accesilbe*/
 .radio-buttons input[type="checkbox"] {
