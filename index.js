@@ -9,7 +9,7 @@ function renderApp(){
 
 //display question to gather user's food preferences when clicked
 function handlePrefs(){
-    $('.food-preferences').on('click', 'input[type="submit"]', function(event){
+    $('.food-preferences').on('submit', '.js-forward-button', function(event){
         event.preventDefault();
         console.log('handlePrefs ran');
         $('.subtitle').html(QUESTION_HELPER);
@@ -24,7 +24,7 @@ function renderQns(){
     let question = '';
     if(QUESTIONS[QUESTION_COUNTER].type === "yesNo"){
         console.log(`rendering a yes/no question`);
-        question += `<form id="${QUESTIONS[QUESTION_COUNTER].type}">
+        question += `<form id="${QUESTIONS[QUESTION_COUNTER].type}" class="js-forward-button">
         <legend>${QUESTIONS[QUESTION_COUNTER].question}</legend>`;
         question += YES_NO_RADIO;
         question += NEXT_BUTTON + `</form>`;
@@ -50,7 +50,7 @@ function generateMultipleChoices(){
     let optionsHTML = '';
     console.log('rendering multiple choice questions');
     //need to change ID since field isn't unique
-    optionsHTML = `<form id="${QUESTIONS[QUESTION_COUNTER].type}" class="radio-buttons">
+    optionsHTML = `<form id="${QUESTIONS[QUESTION_COUNTER].type}" class="radio-buttons js-forward-button">
     <legend>${QUESTIONS[QUESTION_COUNTER].question}</legend>`;
         //find the question that we're on in the questions_and_answers variable
         //then find the options for potential answers for that question 
@@ -64,21 +64,28 @@ function generateMultipleChoices(){
 }
 
 //listens for when user selects a yes/no question  
-//displays additional questions if the answer is yes 
-//todo: save value to be used in API 
-//submit event also doens't work
-/*function handleYesNo(){
-    $('.food-preferences').on('submit', '#yesNo', function(event){
+
+//todo:
+//display additional questions if the answer is yes 
+//display next button if answer is no
+//save value to be used in API 
+function getYesNo(){
+    $('.food-preferences').on('change', '#yesNo input[type="radio"]', function(event){
         event.preventDefault();
         let userAnswer = $('input[type="radio"]:checked').val();
         console.log(userAnswer);
     });
+}
+
+//gets which multiple choice questions were selected
+/*function getMultChoice(){
 }*/
 
 function handleCookApp(){
     renderApp();
     handlePrefs();
-   // handleYesNo();
+    getYesNo();
+  //  getMultChoice();
 }
 
 //run after the page loads

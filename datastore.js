@@ -15,7 +15,7 @@ let restaurant_api_call = ''; //to be built in index.js
 
 //button value for values that won't convey inputs from user
 //will be changed using jQuery depending when it's needed
-const BUTTON = `<form><input type="submit"></form>`;
+const BUTTON = `<form class="js-forward-button"><input type="submit"></form>`;
 
 //creating a separate value for next button since it's used so frequently
 const NEXT_BUTTON = `<input type="submit" value="Next">`;
@@ -77,6 +77,7 @@ const EXCLUDED_INGREDIENTS = {
     paramRecipe: "excluded", 
     options: ["soy", "pork", "peanuts", "dairy", "eggs", "shellfish", "sesame"]
 };
+
 const CITY = `<label for="city">City: <input type="text"></input></label>`;
 const STATE = `<label for="state">State: <select id="state">
     <option value="AL">Alabama</option>
