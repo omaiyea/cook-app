@@ -65,8 +65,6 @@ function generateMultipleChoices(){
 }
 
 //listens for when user selects a yes/no question and shows additional fields if yes
-//todo:
-//save value to be used in API 
 function getYesNo(){
     $('.food-preferences').on('change', '#yesNo input[type="radio"]', function(event){
         event.preventDefault();
@@ -82,14 +80,24 @@ function getYesNo(){
 }
 
 //gets which multiple choice questions were selected
-/*function getMultChoice(){
-}*/
+//todo:
+//save value to be used in API 
+function getMultiChoice(){
+    $('.food-preferences').on('change', 'input[type="checkbox"]', function(event){
+        event.preventDefault();
+        let userAnswer; 
+        if($(this).is(':checked')){
+            userAnswer = this.id;
+        }
+        console.log(userAnswer);
+    });
+}
 
 function handleCookApp(){
     renderApp();
     handlePrefs();
     getYesNo();
-  //  getMultChoice();
+    getMultiChoice();
 }
 
 //run after the page loads

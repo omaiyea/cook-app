@@ -5,7 +5,6 @@
 h2, legend, h3{
     font-family: 'Oswald', Sans-Serif;
     text-transform: uppercase; 
-    text-align: center;
 }
 
 h2{
@@ -18,7 +17,6 @@ legend, h3{
 
 p, input, label, ul, li, sub{
     font-family: 'Quattrocento', Serif;
-    text-align: center;
 }
 
 p {
@@ -33,8 +31,12 @@ ul, li{
     font-size: 1.2em;   
 }
 
-sub {
+sub{
     font-size: 1em;
+}
+
+body{
+    text-align: center;
 }
 
 /*restyle the checkbox to look like a button by removing original styling then replacing it*/
@@ -49,8 +51,9 @@ sub {
     border-radius:20px;
     border:1px solid #eeeeee;
 }
+ 
 
- .button-style input:checked{
+.button-style input:checked{
     background-color: #eee;
 }
 
@@ -58,6 +61,11 @@ sub {
 .button-style input, label:hover{
     cursor: pointer;
 }
+
+/*needs to be more specific
+.button-style input:hover{
+    background-color: blue;
+}*/
 
 /*special formatting to make checkbox options look like buttons*/
 .button-style label{
@@ -100,6 +108,10 @@ input[type="submit"], input[type="button"]:hover{
     margin: auto;
     max-width: 90%;
     max-height: 90%;
+}
+
+fieldset{
+    border: 0;
 }
 
 .hidden{

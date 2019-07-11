@@ -43,8 +43,8 @@ const QUESTIONS = [
 ];
 
 //used to generate yes/no answers for the yes/no questions
-const YES_NO_RADIO = `<label>Yes<input type="radio" name="yesNo" value="Yes"></label>
-<label>No<input type="radio" name="yesNo" value="No"></label>`;
+const YES_NO_RADIO = `<label for="Yes">Yes<input type="radio" name="yesNo" value="Yes"></label>
+<label for="No">No<input type="radio" name="yesNo" value="No"></label>`;
 
 //object for each answer to be mapped to questions and query parameters to get data from differentn apis
 //made this way since answers and api parameters may change 
