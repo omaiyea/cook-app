@@ -39,7 +39,7 @@ sub {
 
 /*restyle the checkbox to look like a button by removing original styling then replacing it*/
 /*still keep accesilbe*/
-.radio-buttons input[type="checkbox"] {
+.button-style input[type="checkbox"] {
     width: 6em;
     height: 2em;
     -webkit-appearance: none;
@@ -50,24 +50,24 @@ sub {
     border:1px solid #eeeeee;
 }
 
- .radio-buttons input:checked{
+ .button-style input:checked{
     background-color: #eee;
 }
 
 /*add pointer to whole button*/
-.radio-buttons input, label:hover{
+.button-style input, label:hover{
     cursor: pointer;
 }
 
 /*special formatting to make checkbox options look like buttons*/
-.radio-buttons label{
+.button-style label{
     display: inline-flex; /*display the options in a row */
     justify-content: center; /*center the label's span text*/
     margin: 5px; /*space out elements so they're easier to read*/
     text-transform: capitalize;
 }
 
-.radio-buttons span{
+.button-style span{
     position: absolute; /*position the labels inside the boxes*/
     align-self: center; /*center the labels inside the boxes*/
 }
@@ -100,4 +100,10 @@ input[type="submit"], input[type="button"]:hover{
     margin: auto;
     max-width: 90%;
     max-height: 90%;
+}
+
+.hidden{
+    overflow: hidden;
+    opacity: 0;   
+    max-height: 0;
 }
