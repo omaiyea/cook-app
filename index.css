@@ -89,6 +89,7 @@ input[type="submit"], input[type="button"]{
     background-color: black;
     color: white;
     font-size: 2em;
+    border-radius: 20px;
 }
 
 input[type="submit"], input[type="button"]:hover{

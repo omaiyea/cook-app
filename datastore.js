@@ -8,7 +8,7 @@ const BASE_URL_RECIPE = 'https://api.edamam.com/search?';
 const app_id_recipe = 'c83687e4'; //app_id
 const app_key_recipe = '12c994934055b08b39c25e680c1e6973'; //app_key
 //https://api.edamam.com/search?app_id=c83687e4&app_key=12c994934055b08b39c25e680c1e6973&q=chicken&q=tomatoes&dietLabels=low-carb&excluded=beef
-let recipe_api_call = ''; //to be built in index.js
+let recipe_api_call = BASE_URL_RECIPE; //to be built in index.js
 
 const api_key_restaurant = 'e7814bee053517644a136b3cc15ea4a9'; //user-key
 let restaurant_api_call = ''; //to be built in index.js
@@ -43,8 +43,8 @@ const QUESTIONS = [
 ];
 
 //used to generate yes/no answers for the yes/no questions
-const YES_NO_RADIO = `<label for="Yes">Yes<input type="radio" name="yesNo" value="Yes"></label>
-<label for="No">No<input type="radio" name="yesNo" value="No"></label>`;
+const YES_NO_RADIO = `<label>Yes<input type="radio" name="yesNo" value="Yes"></label>
+<label>No<input type="radio" name="yesNo" value="No"></label>`;
 
 //object for each answer to be mapped to questions and query parameters to get data from differentn apis
 //made this way since answers and api parameters may change 

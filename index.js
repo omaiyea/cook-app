@@ -16,7 +16,6 @@ function handlePrefs(){
         $('.food-preferences').html(renderQns());
         QUESTION_COUNTER++;
     });
-
 }
 
 //generate the question to be displayed above
@@ -57,9 +56,10 @@ function generateMultipleChoices(){
         //find the question that we're on in the questions_and_answers variable
         //then find the options for potential answers for that question 
         //then display those options in a form
-    QUESTIONS_AND_ANSWERS.find(a => a.qid === QUESTION_COUNTER).answer.options.forEach(function(option){
+    let qaData = QUESTIONS_AND_ANSWERS.find(a => a.qid === QUESTION_COUNTER);
+    qaData.answer.options.forEach(function(option){
         optionsHTML += `<label for="` + option + `"><span>` + option + `</span>
-        <input type="checkbox" id="` + option + `" type="${QUESTIONS[QUESTION_COUNTER].type}"></label>`;
+        <input type="checkbox" id="` + option + `" name="` + QUESTIONS_AND_ANSWERS.indexOf(qaData) + `" type="${QUESTIONS[QUESTION_COUNTER].type}"></label>`;
     });
     return optionsHTML;
 }
@@ -83,14 +83,33 @@ function getYesNo(){
 //todo:
 //save value to be used in API 
 function getMultiChoice(){
-    $('.food-preferences').on('change', 'input[type="checkbox"]', function(event){
+    //test to generate rest of functions
+  /*  $('.food-preferences').on('click', 'input[value="Next"]', function(){
         event.preventDefault();
-        let userAnswer; 
-        if($(this).is(':checked')){
-            userAnswer = this.id;
+        console.log(this);
+        if($('input[type="checkbox"]').length){
+            $.each($('input[type="checkbox"]:checked'), function(){
+                formatQueryParams(this);
+            });
         }
-        console.log(userAnswer);
-    });
+    });*/
+}
+
+//format query parameters
+function formatQueryParams(params){
+    console.log(`formatQueryParams ran`);
+    const queryItems = QUESTIONS_AND_ANSWERS[params.name].answer.paramRecipe + `=` + params.id;
+    console.log(queryItems);
+}
+
+//get recipe data from API
+function getRecipes(){
+
+}
+
+//get restaurant data
+function getRestaurants(){
+
 }
 
 function handleCookApp(){
