@@ -9,7 +9,7 @@ function renderApp(){
 
 //displays question to page
 function renderQuestion(){
-    $('.food-preferences').on('submit', '.js-next-page', function(event){
+    $('.food-preferences').on('click', '.js-next-question', function(event){
         event.preventDefault();
         console.log('renderQuestion ran');
         $('.subtitle').html(QUESTION_HELPER);
@@ -22,19 +22,22 @@ function renderQuestion(){
 function generateQuestion(){
     console.log('generating question');
     let questionHTML = '';
+    //todo: update this so it's less repetitive
     if(QUESTIONS[QUESTION_COUNTER].type === "yesNo"){
         questionHTML += `<form class="js-next-page"><fieldset name="initialQuestion">
         <legend>${QUESTIONS[QUESTION_COUNTER].question}</legend>` + YES_NO_RADIO + `</fieldset>`
         questionHTML += generateMultipleChoices();
+        questionHTML += NEXT_BUTTON + `</form>`;
     }else if(QUESTIONS[QUESTION_COUNTER].type === "multiChoice"){
         questionHTML += `<form class="js-next-page"><fieldset name="initialQuestion">
         <legend>${QUESTIONS[QUESTION_COUNTER].question}</legend>`;
         questionHTML += generateMultipleChoices();
+        questionHTML += NEXT_BUTTON + `</form>`;
     }else{ //currently, this is the location/last question
         questionHTML += `<form class="js-location"><legend>${QUESTIONS[QUESTION_COUNTER].question}</legend>`;
         questionHTML += CITY + STATE;
+        questionHTML += LAST_BUTTON + `</form>`;
     }
-    questionHTML += NEXT_BUTTON + `</form>`;
     return questionHTML;
 }
 
@@ -58,18 +61,18 @@ function generateMultipleChoices(){
 
 //gets if answer was yes or now, and shows secondary questions if yes
 function getYesNo(){
+    //currently all radi buutons may display additional qns
     $('.food-preferences').on('click', 'input[type="radio"]:checked', function(event){
         console.log('getting yes/no values and hiding/showing additional options');
         if($(this).val() === "Yes"){
             $('fieldset[name="secondQuestion"]').removeClass("hidden");
-        }
-        if($(this).val() === "No"){
+        }else if($(this).val() === "No"){
             $('fieldset[name="secondQuestion"]').addClass("hidden");
         }
     });
 }
 
-//get the location of the 
+//get user's location saved
 function getUserLocation(){
     $('.food-preferences').on('submit', '.js-location', function(){
         let city = $('input[type="text"]').val();
@@ -79,6 +82,7 @@ function getUserLocation(){
     });
 }
 
+//to get restaurant data, need city ID from zomato 
 function getCityId(city, state){
     let url = BASE_URL_CITY + LOCATION.param + `=` + encodeURIComponent(city) + '%2C%20' + encodeURIComponent(state);
     fetch(url, RESTAURANT_OPTIONS)
@@ -87,12 +91,30 @@ function getCityId(city, state){
         .catch(err => $('.food-preferences').text(`Something went wrong: ${err.message}`));
 }
 
-
+//get selecteemultichoice options
+//maybe the values could be selected on submit but I was having issues with that and iterating through the questions at the same time
+function getMultiChoice(){
+    $('.food-preferences').on('click', 'input[type="checkbox"]', function(){
+        console.log('getting multiple choice answers');
+        if($(this).is(":checked")){
+            userSelections.push(this);
+        }else if($(this).is(":not(:checked)")){ //if unchecked
+            //this seems heavy handed
+            for(i=0;i<userSelections.length;i++){
+                if(userSelections[i] === this){
+                    userSelections.splice(i, 1);
+                }
+            }
+        }
+        console.log(userSelections);
+    });
+}
 
 function handleCookApp(){
     renderApp();
     renderQuestion();
     getYesNo();
+    getMultiChoice();
     getUserLocation();
 }
 

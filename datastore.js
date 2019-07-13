@@ -8,22 +8,27 @@ const BASE_URL_RECIPE = 'https://api.edamam.com/search?';
 const app_id_recipe = 'c83687e4'; //app_id
 const app_key_recipe = '12c994934055b08b39c25e680c1e6973'; //app_key
 //https://api.edamam.com/search?app_id=c83687e4&app_key=12c994934055b08b39c25e680c1e6973&q=chicken&q=tomatoes&dietLabels=low-carb&excluded=beef
-let recipe_api_call = BASE_URL_RECIPE; //to be built in index.js
 
 const BASE_URL_CITY = 'https://developers.zomato.com/api/v2.1/cities?';
-let restaurant_api_call = ''; //to be built in index.js
 const RESTAURANT_OPTIONS = {
     headers: new Headers({
         "Accept": "application/json",
         "user-key": "e7814bee053517644a136b3cc15ea4a9"})
 };
 
+//to be built in index.js
+let recipe_api_call = BASE_URL_RECIPE; 
+let userSelections = [];
+let restaurant_api_call = '';
+
 //button value for values that won't convey inputs from user
 //will be changed using jQuery depending when it's needed
-const BUTTON = `<form class="js-next-page"><input type="submit"></form>`;
+const BUTTON = `<form class="js-next-page"><input type="submit" class="js-next-question"></form>`;
 
 //creating a separate value for next button since it's used so frequently
-const NEXT_BUTTON = `<input type="submit" value="Next">`;
+const NEXT_BUTTON = `<input type="submit" value="Next" class="js-next-question">`;
+
+const LAST_BUTTON = `<input type="submit" value="Show Me Recipes" class="js-last-question">`;
 
 /*welcome screen vars*/
 const APP_TITLE = `<h2>(What) Should I Cook?</h2>`;
