@@ -7,116 +7,93 @@ function renderApp(){
     $('input[type="submit"]').prop('value', "Let's Start!");
 }
 
-//display question to gather user's food preferences when clicked
-function handlePrefs(){
-    $('.food-preferences').on('submit', '.js-forward-button', function(event){
+//displays question to page
+function renderQuestion(){
+    $('.food-preferences').on('submit', '.js-next-page', function(event){
         event.preventDefault();
-        console.log('handlePrefs ran');
+        console.log('renderQuestion ran');
         $('.subtitle').html(QUESTION_HELPER);
-        $('.food-preferences').html(renderQns());
+        $('.food-preferences').html(generateQuestion());
         QUESTION_COUNTER++;
     });
 }
 
-//generate the question to be displayed above
-//values of question depend on what type of question it is
-function renderQns(){
-    let question = '';
+//creates HTML to display question
+function generateQuestion(){
+    console.log('generating question');
+    let questionHTML = '';
     if(QUESTIONS[QUESTION_COUNTER].type === "yesNo"){
-        console.log(`rendering a yes/no question`);        
-        question += `<form id="${QUESTIONS[QUESTION_COUNTER].type}" class="button-style js-forward-button">
+        questionHTML += `<form class="js-next-page"><fieldset name="initialQuestion">
+        <legend>${QUESTIONS[QUESTION_COUNTER].question}</legend>` + YES_NO_RADIO + `</fieldset>`
+        questionHTML += generateMultipleChoices();
+    }else if(QUESTIONS[QUESTION_COUNTER].type === "multiChoice"){
+        questionHTML += `<form class="js-next-page"><fieldset name="initialQuestion">
         <legend>${QUESTIONS[QUESTION_COUNTER].question}</legend>`;
-        question += YES_NO_RADIO;
-        question += `<fieldset class="hidden">`;
-        question += generateMultipleChoices();
-        question += `</fieldset>`;    
+        questionHTML += generateMultipleChoices();
+    }else{ //currently, this is the location/last question
+        questionHTML += `<form class="js-location"><legend>${QUESTIONS[QUESTION_COUNTER].question}</legend>`;
+        questionHTML += CITY + STATE;
     }
-    if (QUESTIONS[QUESTION_COUNTER].type === "multiChoice"){
-        console.log(`rendering a multiple choice question`);
-        question += `<form id="${QUESTIONS[QUESTION_COUNTER].type}" class="button-style js-forward-button">
-        <legend>${QUESTIONS[QUESTION_COUNTER].question}</legend>`;
-        question += generateMultipleChoices(); // future: refactor this so generateMultipleChoices can do both hidden/not
-    }
-    if (QUESTIONS[QUESTION_COUNTER].type === "location"){
-        console.log(`rendering a location question`);
-        question = `<form id="${QUESTIONS[QUESTION_COUNTER].type}" class="text-inputs">
-        <legend>${QUESTIONS[QUESTION_COUNTER].question}</legend>`;
-        question += CITY;
-        question += STATE;
-    }
-    question += NEXT_BUTTON + `</form>`;
-    return question;
+    questionHTML += NEXT_BUTTON + `</form>`;
+    return questionHTML;
 }
 
-//generate data for questions with multiple choices
-//will also be used for questions with potential follow up questions depending on yes/no answer
+//generates multiple choice answers
 function generateMultipleChoices(){
-    let optionsHTML = '';
-    console.log('rendering multiple choice questions');
-        //find the question that we're on in the questions_and_answers variable
-        //then find the options for potential answers for that question 
-        //then display those options in a form
+    console.log('generating multiple choice options');
+    let multiChoiceHTML = '';
+    let classVal = '';
+    //yes no multiple choice answers will be hidden by default
+    if(QUESTIONS[QUESTION_COUNTER].type === "yesNo"){
+        multiChoiceHTML += `<fieldset name="secondQuestion" class="hidden">`;
+    }
     let qaData = QUESTIONS_AND_ANSWERS.find(a => a.qid === QUESTION_COUNTER);
     qaData.answer.options.forEach(function(option){
-        optionsHTML += `<label for="` + option + `"><span>` + option + `</span>
+        multiChoiceHTML += `<label for="` + option + `"><span>` + option + `</span>
         <input type="checkbox" id="` + option + `" name="` + QUESTIONS_AND_ANSWERS.indexOf(qaData) + `" type="${QUESTIONS[QUESTION_COUNTER].type}"></label>`;
     });
-    return optionsHTML;
+    multiChoiceHTML += `</fieldset>`; //closes fieldset for both yes/no and multichoice questions
+    return multiChoiceHTML;
 }
 
-//listens for when user selects a yes/no question and shows additional fields if yes
+//gets if answer was yes or now, and shows secondary questions if yes
 function getYesNo(){
-    $('.food-preferences').on('change', '#yesNo input[type="radio"]', function(event){
-        event.preventDefault();
-        console.log('generating secondary answers');
-        let userAnswer = $('input[type="radio"]:checked').val();
-        if (userAnswer === "Yes"){
-            $('.food-preferences fieldset').removeClass("hidden");
-        }else{
-            $('.food-preferences fieldset').addClass("hidden");
+    $('.food-preferences').on('click', 'input[type="radio"]:checked', function(event){
+        console.log('getting yes/no values and hiding/showing additional options');
+        if($(this).val() === "Yes"){
+            $('fieldset[name="secondQuestion"]').removeClass("hidden");
         }
-        console.log(userAnswer);
+        if($(this).val() === "No"){
+            $('fieldset[name="secondQuestion"]').addClass("hidden");
+        }
     });
 }
 
-//gets which multiple choice questions were selected
-//todo:
-//save value to be used in API 
-function getMultiChoice(){
-    //test to generate rest of functions
-  /*  $('.food-preferences').on('click', 'input[value="Next"]', function(){
-        event.preventDefault();
-        console.log(this);
-        if($('input[type="checkbox"]').length){
-            $.each($('input[type="checkbox"]:checked'), function(){
-                formatQueryParams(this);
-            });
-        }
-    });*/
+//get the location of the 
+function getUserLocation(){
+    $('.food-preferences').on('submit', '.js-location', function(){
+        let city = $('input[type="text"]').val();
+        let state = $('#state').val();
+        getCityId(city, state);
+        $('.food-preferences').html("you should eat");
+    });
 }
 
-//format query parameters
-function formatQueryParams(params){
-    console.log(`formatQueryParams ran`);
-    const queryItems = QUESTIONS_AND_ANSWERS[params.name].answer.paramRecipe + `=` + params.id;
-    console.log(queryItems);
+function getCityId(city, state){
+    let url = BASE_URL_CITY + LOCATION.param + `=` + encodeURIComponent(city) + '%2C%20' + encodeURIComponent(state);
+    fetch(url, RESTAURANT_OPTIONS)
+        .then(response => response.json())
+        .then(responseJson => (console.log(responseJson.location_suggestions[0].id))) //future: pass to func to get restaurantd
+        .catch(err => $('.food-preferences').text(`Something went wrong: ${err.message}`));
 }
 
-//get recipe data from API
-function getRecipes(){
 
-}
-
-//get restaurant data
-function getRestaurants(){
-
-}
 
 function handleCookApp(){
     renderApp();
-    handlePrefs();
+    renderQuestion();
     getYesNo();
-    getMultiChoice();
+    getUserLocation();
 }
 
 //run after the page loads

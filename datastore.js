@@ -10,12 +10,17 @@ const app_key_recipe = '12c994934055b08b39c25e680c1e6973'; //app_key
 //https://api.edamam.com/search?app_id=c83687e4&app_key=12c994934055b08b39c25e680c1e6973&q=chicken&q=tomatoes&dietLabels=low-carb&excluded=beef
 let recipe_api_call = BASE_URL_RECIPE; //to be built in index.js
 
-const api_key_restaurant = 'e7814bee053517644a136b3cc15ea4a9'; //user-key
+const BASE_URL_CITY = 'https://developers.zomato.com/api/v2.1/cities?';
 let restaurant_api_call = ''; //to be built in index.js
+const RESTAURANT_OPTIONS = {
+    headers: new Headers({
+        "Accept": "application/json",
+        "user-key": "e7814bee053517644a136b3cc15ea4a9"})
+};
 
 //button value for values that won't convey inputs from user
 //will be changed using jQuery depending when it's needed
-const BUTTON = `<form class="js-forward-button"><input type="submit"></form>`;
+const BUTTON = `<form class="js-next-page"><input type="submit"></form>`;
 
 //creating a separate value for next button since it's used so frequently
 const NEXT_BUTTON = `<input type="submit" value="Next">`;
@@ -27,7 +32,7 @@ const WELCOME_MESSAGE = `<p>Hangry and indecisive?</p>
 <p>Let's figure out what you should cook, or if you should just order takeout again.</p>
 <p>Answer some easy questions. Then we'll show you some awesome recipes.</p>
 <p>If you can't decide, we'll show you some of the best places to eat out instead!</p>`;
-const QUESTION_HELPER = `<sub>If any questions don't apply, just skip! If more than one answer is true, select them all.</sub>`;
+const QUESTION_HELPER = `<sub>If more than one answer is true, select them all!</sub>`;
 
 /*vars to get user's preferences*/
 
@@ -39,7 +44,13 @@ const QUESTIONS = [
     {question: "And are you craving any cuisines?", type: "yesNo"},
     {question: "Which ingredients do you want to use?", type: "multiChoice"},
     {question: "Are there ingredients that you can't eat?", type: "multiChoice"},
-    {question: "And last, where do you eat out?", type: "location"}
+    {question: "And last, where do you eat out?", type: "location"},
+    {question: "test", type: "yesNo"}
+];
+
+const FOLLOWUP_QUESTIONS = [
+    {question: "What diets are you on?", qid: 0},
+    {question: "What cuisines are you craving?", qid: 1}
 ];
 
 //used to generate yes/no answers for the yes/no questions
@@ -144,7 +155,8 @@ const QUESTIONS_AND_ANSWERS = [
     {qid: 1, answer: CUISINE_ANSWERS},
     {qid: 2, answer: INGREDIENTS},
     {qid: 3, answer: EXCLUDED_INGREDIENTS},
-    {qid: 4, answer: LOCATION}
+    {qid: 4, answer: LOCATION},
+    {qid: 5, answer: HEALTH_ANSWERS}
 ];
 
 //vars to display user's preferences
