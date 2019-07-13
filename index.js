@@ -75,21 +75,23 @@ function getYesNo(){
 //get user's location saved
 function getUserLocation(){
     $('.food-preferences').on('submit', '.js-location', function(){
+        console.log('storing location');
         let city = $('input[type="text"]').val();
         let state = $('#state').val();
         getCityId(city, state);
-        $('.food-preferences').html("you should eat");
+ //since this is the last question, also display the recipes at the end. todo: separate this better
+        renderRecipes();
     });
 }
 
 //to get restaurant data, need city ID from zomato 
 function getCityId(city, state){
-    let url = BASE_URL_CITY + LOCATION.param + `=` + encodeURIComponent(city) + '%2C%20' + encodeURIComponent(state);
+  /*  let url = BASE_URL_CITY + LOCATION.param + `=` + encodeURIComponent(city) + '%2C%20' + encodeURIComponent(state);
     fetch(url, RESTAURANT_OPTIONS)
         .then(response => response.json())
         .then(responseJson => (console.log(responseJson.location_suggestions[0].id))) //future: pass to func to get restaurantd
         .catch(err => $('.food-preferences').text(`Something went wrong: ${err.message}`));
-}
+*/}
 
 //get selecteemultichoice options
 //maybe the values could be selected on submit but I was having issues with that and iterating through the questions at the same time
@@ -108,6 +110,22 @@ function getMultiChoice(){
         }
         console.log(userSelections);
     });
+}
+
+function renderRecipes(){
+    console.log('renderRecipes ran');
+    $('.food-preferences').html('recipes');
+    formatQueryParams();
+}
+
+//format query parameters for recipe API
+function formatQueryParams(){
+    console.log(`formatQueryParams ran`);
+    let queryItems = 'app_id=' + app_id_recipe + '&app_key=' + app_key_recipe;
+    userSelections.forEach(function(item){
+         queryItems +=`&`+ QUESTIONS_AND_ANSWERS[item.name].answer.paramRecipe + `=` + item.id;
+    })
+    console.log(queryItems);
 }
 
 function handleCookApp(){
