@@ -1,7 +1,9 @@
 /******* this file contains static text / buttons used throught app so index.js is easier to read*/
 
-//max results to display to user and gather from api
-const MAX_RESULTS = 5; 
+//max results to display to user and gather from api at a time
+const MAX_RESULTS = 5;
+//number of results that's been displayed to user so far 
+let NUM_DISPLAY = 0; 
 
 //only checking this in because it's a graded project
 const BASE_URL_RECIPE = 'https://api.edamam.com/search?';

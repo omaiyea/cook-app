@@ -80,7 +80,7 @@ function getUserLocation(){
         let state = $('#state').val();
         getCityId(city, state);
  //since this is the last question, also display the recipes at the end. todo: separate this better
-        renderRecipes();
+        getRecipes();
     });
 }
 
@@ -112,10 +112,30 @@ function getMultiChoice(){
     });
 }
 
-function renderRecipes(){
+function getRecipes(){
     console.log('renderRecipes ran');
     $('.food-preferences').html('recipes');
-    formatQueryParams();
+    let url = BASE_URL_RECIPE + formatQueryParams();
+    fetch(url)
+    .then(response => response.json())
+    .then(responseJson => renderRecipes(responseJson))
+    .catch(err => $('.food-preferences').text(`Something went wrong: ${err.message}`));
+}
+
+function renderRecipes(responseJson){
+    console.log(responseJson);
+    $('header').html("<h2>You should cook:</h2>");
+    $('.food-preferences').empty();
+    $('.food-choices').html(`
+        <img src="${responseJson.hits[0].recipe.image}" alt="${responseJson.hits[0].recipe.label} picture">
+        <h3>${responseJson.hits[0].recipe.label}</h3>
+        <form><button formaction="${responseJson.hits[0].recipe.url}">YAS - Take me to the recipe</button>
+        <button>PASS - Show me another recipe</button>
+    `);
+    console.log();
+
+
+    
 }
 
 //format query parameters for recipe API
@@ -125,7 +145,7 @@ function formatQueryParams(){
     userSelections.forEach(function(item){
          queryItems +=`&`+ QUESTIONS_AND_ANSWERS[item.name].answer.paramRecipe + `=` + item.id;
     })
-    console.log(queryItems);
+    return queryItems;
 }
 
 function handleCookApp(){
