@@ -62,11 +62,6 @@ body{
     cursor: pointer;
 }
 
-/*needs to be more specific
-.button-style input:hover{
-    background-color: blue;
-}*/
-
 /*special formatting to make checkbox options look like buttons*/
 .button-style label{
     display: inline-flex; /*display the options in a row */

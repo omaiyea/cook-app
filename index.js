@@ -13,6 +13,9 @@ function renderQuestion(){
         event.preventDefault();
         console.log('renderQuestion ran');
         $('.subtitle').html(QUESTION_HELPER);
+        if(userSelections){
+            let text = `<p>So far, we're looking for ${userSelections.name}`
+        }
         $('.food-preferences').html(generateQuestion());
         QUESTION_COUNTER++;
     });
@@ -113,29 +116,63 @@ function getMultiChoice(){
 }
 
 function getRecipes(){
-    console.log('renderRecipes ran');
+    console.log('getRecipes ran');
     $('.food-preferences').html('recipes');
     let url = BASE_URL_RECIPE + formatQueryParams();
+    console.log(url);
     fetch(url)
     .then(response => response.json())
     .then(responseJson => renderRecipes(responseJson))
-    .catch(err => $('.food-preferences').text(`Something went wrong: ${err.message}`));
+    .catch(err => {
+        $('.food-preferences').html(`<p>Oops! Something went wrong: ${err.message}.<br>
+        Try starting over with more general answers.</p>`);
+        QUESTION_COUNTER = 0;
+        userSelections = [];
+        $('.food-preferences').append(BUTTON);
+        $('input[type="submit"]').prop('value', "Redo!"); 
+    })
 }
 
 function renderRecipes(responseJson){
     console.log(responseJson);
     $('header').html("<h2>You should cook:</h2>");
     $('.food-preferences').empty();
-    $('.food-choices').html(`
-        <img src="${responseJson.hits[0].recipe.image}" alt="${responseJson.hits[0].recipe.label} picture">
-        <h3>${responseJson.hits[0].recipe.label}</h3>
-        <form><button formaction="${responseJson.hits[0].recipe.url}">YAS - Take me to the recipe</button>
-        <button>PASS - Show me another recipe</button>
-    `);
-    console.log();
+    for(i=0;i<MAX_RESULTS;i++){
+  //      recipe_desc = ''; //reset  recipe desc
+        fetchDesc(responseJson.hits[i].recipe.label);
+        console.log('render rec' + recipe_desc);
+        $('.food-choices').append(`
+            <img src="${responseJson.hits[i].recipe.image}" alt="${responseJson.hits[i].recipe.label} picture">
+            <h3>${responseJson.hits[i].recipe.label}</h3>
+            <a href="${responseJson.hits[i].recipe.url}" target="_blank">Take me to the recipe!</a>`);
+    }
+}
 
+//search wikipedia api to get description of dish
+function fetchDesc(name){
+    console.log('getting wikipedia description');
+    let url = URL_WIKI + encodeURIComponent(name);
+    console.log(url);
+    fetch(url)
+        .then(response => {
+            if (response.ok){ 
+                return response.json();
+            }
+            throw new Error(response.statusText);
+        })
+        .then(responseJson => setDesc(responseJson[2][0], responseJson[3][0]))
+        .catch(err => console.log(`Description can't be retrived. Error: ${err.message}`)); 
+}
 
-    
+function setDesc(description, link){
+    console.log('setting wikipedia desciption')
+    if(description){
+        recipe_desc = `<p>` + description + ` Read more about the dish on <a href="` + link + `">Wikipedia</a></p>`;
+    }else{
+        recipe_desc = "<p>A yummy dish!</p>";
+    }
+    $('.food-choices').append(recipe_desc);
+    console.log(recipe_desc);
 }
 
 //format query parameters for recipe API
@@ -143,8 +180,10 @@ function formatQueryParams(){
     console.log(`formatQueryParams ran`);
     let queryItems = 'app_id=' + app_id_recipe + '&app_key=' + app_key_recipe;
     userSelections.forEach(function(item){
+        //need to comma separate q params
          queryItems +=`&`+ QUESTIONS_AND_ANSWERS[item.name].answer.paramRecipe + `=` + item.id;
     })
+    console.log(queryItems);
     return queryItems;
 }
 

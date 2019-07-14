@@ -18,10 +18,15 @@ const RESTAURANT_OPTIONS = {
         "user-key": "e7814bee053517644a136b3cc15ea4a9"})
 };
 
+//will be used to get descriptions for dishes since recipe api doesn't have
+const URL_WIKI = 'https://en.wikipedia.org/w/api.php?action=opensearch&utf8=&format=json&origin=*&search=';
+
 //to be built in index.js
 let recipe_api_call = BASE_URL_RECIPE; 
 let userSelections = [];
 let restaurant_api_call = '';
+let recipe_desc = '';
+
 
 //button value for values that won't convey inputs from user
 //will be changed using jQuery depending when it's needed
@@ -47,21 +52,20 @@ let QUESTION_COUNTER = 0; //loops through questions
 
 //array for questions since they're least likely to change
 const QUESTIONS = [
-    {question: "First things first, are you on any diets?", type: "yesNo"}, 
-    {question: "And are you craving any cuisines?", type: "yesNo"},
-    {question: "Which ingredients do you want to use?", type: "multiChoice"},
-    {question: "Are there ingredients that you can't eat?", type: "multiChoice"},
+    {question: "First things first, which ingredients do you want to use?", type: "multiChoice"}, 
+    {question: "And are there ingredients that you can't eat?", type: "yesNo"},
+    {question: "Are you on any diets?", type: "yesNo"},
+    {question: "What do you usually order for takeout?", type: "multiChoice"},
     {question: "And last, where do you eat out?", type: "location"},
-    {question: "test", type: "yesNo"}
 ];
 
 const FOLLOWUP_QUESTIONS = [
-    {question: "What diets are you on?", qid: 0},
-    {question: "What cuisines are you craving?", qid: 1}
+    {question: "What diets are you on?", qid: 2},
+    {question: "What cuisines are you craving?", qid: 4}
 ];
 
 //used to generate yes/no answers for the yes/no questions
-const YES_NO_RADIO = `<label>Yes<input type="radio" name="yesNo" value="Yes"></label>
+const YES_NO_RADIO = `<label>Yes<input type="radio" name="yesNo" value="Yes" required></label>
 <label>No<input type="radio" name="yesNo" value="No"></label>`;
 
 //object for each answer to be mapped to questions and query parameters to get data from differentn apis
@@ -158,12 +162,11 @@ const LOCATION = {
 
 //maps questions and answers
 const QUESTIONS_AND_ANSWERS = [
-    {qid: 0, answer: HEALTH_ANSWERS},
-    {qid: 1, answer: CUISINE_ANSWERS},
-    {qid: 2, answer: INGREDIENTS},
-    {qid: 3, answer: EXCLUDED_INGREDIENTS},
+    {qid: 0, answer: INGREDIENTS},
+    {qid: 1, answer: EXCLUDED_INGREDIENTS},
+    {qid: 2, answer: HEALTH_ANSWERS},
+    {qid: 3, answer: CUISINE_ANSWERS},
     {qid: 4, answer: LOCATION},
-    {qid: 5, answer: HEALTH_ANSWERS}
 ];
 
 //vars to display user's preferences
