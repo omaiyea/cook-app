@@ -26,7 +26,7 @@ let recipe_api_call = BASE_URL_RECIPE;
 let userSelections = [];
 let restaurant_api_call = '';
 let recipe_desc = '';
-
+let recipe_response = '';
 
 //button value for values that won't convey inputs from user
 //will be changed using jQuery depending when it's needed
@@ -168,6 +168,10 @@ const QUESTIONS_AND_ANSWERS = [
     {qid: 3, answer: CUISINE_ANSWERS},
     {qid: 4, answer: LOCATION},
 ];
+
+//html for buttons to iterate through recipes
+const RECIPE_NEXT_BUTTONS = `<form><button class="js-recipe" target="_blank">Yas - take me to the recipe</button>
+<button class="js-next-recipe">Pass - show me another recipe</button></form>`;
 
 //vars to display user's preferences
 

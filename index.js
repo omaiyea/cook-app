@@ -115,6 +115,7 @@ function getMultiChoice(){
     });
 }
 
+//fetch recipe response data
 function getRecipes(){
     console.log('getRecipes ran');
     $('.food-preferences').html('recipes');
@@ -122,10 +123,11 @@ function getRecipes(){
     console.log(url);
     fetch(url)
     .then(response => response.json())
-    .then(responseJson => renderRecipes(responseJson))
+    .then(responseJson => setRecipeResponse(responseJson))
     .catch(err => {
         $('.food-preferences').html(`<p>Oops! Something went wrong: ${err.message}.<br>
         Try starting over with more general answers.</p>`);
+        $('.food-choices').empty();
         QUESTION_COUNTER = 0;
         userSelections = [];
         $('.food-preferences').append(BUTTON);
@@ -133,19 +135,37 @@ function getRecipes(){
     })
 }
 
-function renderRecipes(responseJson){
-    console.log(responseJson);
+//save the recipe response data in a global variable and display the initial recipe
+function setRecipeResponse(responseJson){
+    console.log('saving recipe response data')
+    recipe_response = responseJson;
+    console.log(recipe_response);
+    renderRecipe();
+}
+
+//display dishes and a link to their recipe
+function renderRecipe(){
+    console.log('render recipes ran');
     $('header').html("<h2>You should cook:</h2>");
     $('.food-preferences').empty();
-    for(i=0;i<MAX_RESULTS;i++){
-  //      recipe_desc = ''; //reset  recipe desc
-        fetchDesc(responseJson.hits[i].recipe.label);
-        console.log('render rec' + recipe_desc);
-        $('.food-choices').append(`
-            <img src="${responseJson.hits[i].recipe.image}" alt="${responseJson.hits[i].recipe.label} picture">
-            <h3>${responseJson.hits[i].recipe.label}</h3>
-            <a href="${responseJson.hits[i].recipe.url}" target="_blank">Take me to the recipe!</a>`);
-    }
+    fetchDesc(recipe_response.hits[NUM_DISPLAY].recipe.label);
+    $('.js-header').html(`
+        <img src="` + recipe_response.hits[NUM_DISPLAY].recipe.image + `" alt="` + recipe_response.hits[NUM_DISPLAY].recipe.label + ` picture">
+        <h3>` + recipe_response.hits[NUM_DISPLAY].recipe.label + `</h3>`);
+    $('.js-recipe-link').html(RECIPE_NEXT_BUTTONS);
+    $('.js-recipe').attr("formaction", recipe_response.hits[NUM_DISPLAY].recipe.url);
+}
+
+function setNextRecipe(){
+    $('.food-choices').on('click', '.js-next-recipe', function(){
+        console.log('preparing to display next recipe');
+        NUM_DISPLAY++;
+        if(NUM_DISPLAY % 5 === 0){
+            $('.food-choices').html(`<p>We showed you five foods but nothing sounded good! Maybe you should eat out. Here are a few tasty restaurants close by that we think you'll like.</p>`);
+        }else{
+            renderRecipe();
+        }
+    });
 }
 
 //search wikipedia api to get description of dish
@@ -160,6 +180,7 @@ function fetchDesc(name){
             }
             throw new Error(response.statusText);
         })
+        //the most accurtae description has been early in the array
         .then(responseJson => setDesc(responseJson[2][0], responseJson[3][0]))
         .catch(err => console.log(`Description can't be retrived. Error: ${err.message}`)); 
 }
@@ -171,7 +192,7 @@ function setDesc(description, link){
     }else{
         recipe_desc = "<p>A yummy dish!</p>";
     }
-    $('.food-choices').append(recipe_desc);
+    $('.js-description').html(recipe_desc);
     console.log(recipe_desc);
 }
 
@@ -193,6 +214,7 @@ function handleCookApp(){
     getYesNo();
     getMultiChoice();
     getUserLocation();
+    setNextRecipe();
 }
 
 //run after the page loads
