@@ -126,7 +126,7 @@ function getRecipes(){
     .then(responseJson => setRecipeResponse(responseJson))
     .catch(err => {
         $('.food-preferences').html(`<p>Oops! Something went wrong: ${err.message}.<br>
-        Try starting over with more general answers.</p>`);
+        Try starting over with more general answers or making sure you've selected at least one ingredient.</p>`);
         resetAnswers();
     })
 }
@@ -233,15 +233,14 @@ function formatQueryParams(){
     ingredients.join(',');
     cuisine.join(',');
     recipe_api_call += `&q=` + ingredients;
-    restaurant_api_call += `q=` + ingredients;
     restaurant_api_call += '&cuisine=' + cuisine;
 }
 
-//add city ID to API call
+//add city ID to API call and limit data returned
 //future: rewrite so all restaurant params are together/separate from recipe
 function setCityID(cityID){
     console.log('adding city to api key')
-    restaurant_api_call += '&entity_id=' + cityID;
+    restaurant_api_call += '&entity_id=' + cityID + `&entity_type=city&count=` + MAX_RESULTS;
     console.log(restaurant_api_call);
 }
 
@@ -272,16 +271,15 @@ function renderRestaurants(responseJson){
     if(responseJson.restaurants.length){
         $('.js-description').html(RESTAURANT_INTRO);
         for(i=0; i<MAX_RESULTS; i++){
-            if(responseJson.restaurants.restaurants[i].restaurant.R.has_menu_status.delivery === 1){
-                $('.js-description').append(responseJson.restaurants.restaurants[i].restaurant.name);
-                $('.js-description').append(responseJson.restaurants.restaurants[i].restaurant.menu_url);
-                $('.js-description').append(responseJson.restaurants.restaurants[i].restaurant.photos_url);
-            }
+            $('.js-description').append(`<h3>` + responseJson.restaurants[i].restaurant.name + `</h3>`);
+            $('.js-description').append(`<img src="` + responseJson.restaurants[i].restaurant.featured_image + `" alt="restaurant picture of `+ responseJson.restaurants[i].restaurant.name + `">`);
+            $('.js-description').append(`<a href="` + responseJson.restaurants[i].restaurant.menu_url + `" target="_blank">Menu</a>`);
         }
     }else{
         $('.js-description').html(RESTAURANT_ERROR);
     }
-    $('.js-recipe-link').html(RESTAURANT_NEXT_BUTTONS);
+    $('.js-recipe-link').html(RESTAURANT_REDO);
+    $('.js-recipe-link').append(RESTAURANT_NEXT_BUTTONS);
 }
 
 function handleCookApp(){

@@ -71,7 +71,7 @@ const FOLLOWUP_QUESTIONS = [
 
 //used to generate yes/no answers for the yes/no questions
 const YES_NO_RADIO = `<label>Yes<input type="radio" name="yesNo" value="Yes" required></label>
-<label>No<input type="radio" name="yesNo" value="No"></label>`;
+<label>No<input type="radio" name="yesNo" value="No" required></label>`;
 
 //object for each answer to be mapped to questions and query parameters to get data from differentn apis
 //made this way since answers and api parameters may change 
@@ -104,7 +104,7 @@ const EXCLUDED_INGREDIENTS = {
     options: ["soy", "pork", "peanuts", "dairy", "eggs", "shellfish", "sesame"]
 };
 
-const CITY = `<label for="city">City: <input type="text"></input></label>`;
+const CITY = `<label for="city">City: <input type="text" required></input></label>`;
 const STATE = `<label for="state">State: <select id="state">
     <option value="AL">Alabama</option>
     <option value="AK">Alaska</option>
@@ -174,15 +174,14 @@ const QUESTIONS_AND_ANSWERS = [
 ];
 
 //html for buttons to iterate through recipes
-const RECIPE_NEXT_BUTTONS = `<form><button class="js-recipe" target="_blank">Yas - take me to the recipe</button>
-<button class="js-next-recipe">Pass - show me another recipe</button></form>`;
+const RECIPE_NEXT_BUTTONS = `<form><button class="js-recipe" target="_blank">Take me to this recipe</button>
+<button class="js-next-recipe">Show me another recipe</button></form>`;
 
 //html to introduce restaurant text
 const RESTAURANT_MESSAGE = `<p>We showed you five foods but nothing sounded good! </p?`;
-const RESTAURANT_ERROR = `<p>Unfortunately, we couldn't find any restaurants we think you'd like near you!
-We could show you five more dishes to make, or you could redo your food preferences.`;
-const RESTAURANT_INTRO = `<p>Maybe you should eat out. Here are a few tasty restaurants that deliver in your city that we think you'll like.</p>`;
-
+const RESTAURANT_ERROR = `<p>Unfortunately, we couldn't find any restaurants we think you'd like near you!`;
+const RESTAURANT_INTRO = `<p>Maybe you should eat out. Here are a few tasty restaurants in your city that we think you'll like.</p>`;
+const RESTAURANT_REDO = `<p>We could show you five more dishes to make, or you could redo your food preferences. </p>`;
 //buttons to either show more recipes or redo quiz
-const RESTAURANT_NEXT_BUTTONS = `<form><button class="">Let me redo my preferences</button>
+const RESTAURANT_NEXT_BUTTONS = `<form><button class="">Redo my preferences</button>
 <button class="js-next-recipe">Show me more recipes</button></form>`;
