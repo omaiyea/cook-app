@@ -12,6 +12,7 @@ const app_key_recipe = '12c994934055b08b39c25e680c1e6973'; //app_key
 //https://api.edamam.com/search?app_id=c83687e4&app_key=12c994934055b08b39c25e680c1e6973&q=chicken&q=tomatoes&dietLabels=low-carb&excluded=beef
 
 const BASE_URL_CITY = 'https://developers.zomato.com/api/v2.1/cities?';
+const BASE_URL_RESTAURANT = 'https://developers.zomato.com/api/v2.1/search?';
 const RESTAURANT_OPTIONS = {
     headers: new Headers({
         "Accept": "application/json",
@@ -19,14 +20,16 @@ const RESTAURANT_OPTIONS = {
 };
 
 //will be used to get descriptions for dishes since recipe api doesn't have
+//expects exact match
 const URL_WIKI = 'https://en.wikipedia.org/w/api.php?action=opensearch&utf8=&format=json&origin=*&search=';
+//less specific
+//const URL_WIKI = 'https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&utf8=1&srsearch=';
 
 //to be built in index.js
-let recipe_api_call = BASE_URL_RECIPE; 
 let userSelections = [];
-let restaurant_api_call = '';
+let restaurant_api_call = BASE_URL_RESTAURANT;
 let recipe_desc = '';
-let recipe_response = '';
+let restaurant_query = '';
 
 //button value for values that won't convey inputs from user
 //will be changed using jQuery depending when it's needed
@@ -84,7 +87,6 @@ const HEALTH_ANSWERS = {
 };*/
 
 const CUISINE_ANSWERS = {
-    paramRecipe: "cuisineType", 
     paramRestaurant: "cuisine", 
     options: ["chinese", "indian", "american", "mexican", "ghanaian", "filipino"]
 };

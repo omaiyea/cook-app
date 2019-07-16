@@ -7,7 +7,7 @@ function renderApp(){
     $('input[type="submit"]').prop('value', "Let's Start!");
 }
 
-//displays question to page
+//displays each question to page
 function renderQuestion(){
     $('.food-preferences').on('click', '.js-next-question', function(event){
         event.preventDefault();
@@ -75,28 +75,7 @@ function getYesNo(){
     });
 }
 
-//get user's location saved
-function getUserLocation(){
-    $('.food-preferences').on('submit', '.js-location', function(){
-        console.log('storing location');
-        let city = $('input[type="text"]').val();
-        let state = $('#state').val();
-        getCityId(city, state);
- //since this is the last question, also display the recipes at the end. todo: separate this better
-        getRecipes();
-    });
-}
-
-//to get restaurant data, need city ID from zomato 
-function getCityId(city, state){
-  /*  let url = BASE_URL_CITY + LOCATION.param + `=` + encodeURIComponent(city) + '%2C%20' + encodeURIComponent(state);
-    fetch(url, RESTAURANT_OPTIONS)
-        .then(response => response.json())
-        .then(responseJson => (console.log(responseJson.location_suggestions[0].id))) //future: pass to func to get restaurantd
-        .catch(err => $('.food-preferences').text(`Something went wrong: ${err.message}`));
-*/}
-
-//get selecteemultichoice options
+//get each selected multiple choice options
 //maybe the values could be selected on submit but I was having issues with that and iterating through the questions at the same time
 function getMultiChoice(){
     $('.food-preferences').on('click', 'input[type="checkbox"]', function(){
@@ -115,24 +94,51 @@ function getMultiChoice(){
     });
 }
 
+//saves user's location after they've entered it
+//since this is the last question, also display the recipes at the end with getRecipes
+//todo: separate getRecipes
+function getUserLocation(){
+    $('.food-preferences').on('submit', '.js-location', function(){
+        console.log('storing location');
+        let city = $('input[type="text"]').val();
+        let state = $('#state').val();
+        getCityId(city, state);
+        getRecipes();
+    });
+}
+
+//to get restaurant data, need city ID from zomato 
+function getCityId(city, state){
+    let url = BASE_URL_CITY + LOCATION.param + `=` + encodeURIComponent(city) + '%2C%20' + encodeURIComponent(state);
+    fetch(url, RESTAURANT_OPTIONS)
+        .then(response => response.json())
+        .then(responseJson => (getRestaurants(responseJson.location_suggestions[0].id)))
+        .catch(err => $('.food-preferences').text(`Something went wrong: ${err.message}`));
+}
+
 //fetch recipe response data
 function getRecipes(){
     console.log('getRecipes ran');
-    $('.food-preferences').html('recipes');
     let url = BASE_URL_RECIPE + formatQueryParams();
-    console.log(url);
     fetch(url)
     .then(response => response.json())
     .then(responseJson => setRecipeResponse(responseJson))
     .catch(err => {
         $('.food-preferences').html(`<p>Oops! Something went wrong: ${err.message}.<br>
         Try starting over with more general answers.</p>`);
-        $('.food-choices').empty();
-        QUESTION_COUNTER = 0;
-        userSelections = [];
-        $('.food-preferences').append(BUTTON);
-        $('input[type="submit"]').prop('value', "Redo!"); 
+        resetAnswers();
     })
+}
+
+//allows user to redo food preferences questions
+function resetAnswers(){
+    console.log('resetting answers');
+    $('.food-choices').empty();
+    QUESTION_COUNTER = 0;
+    NUM_DISPLAY = 0;
+    userSelections = [];
+    $('.food-preferences').append(BUTTON);
+    $('input[type="submit"]').prop('value', "Redo!"); 
 }
 
 //save the recipe response data in a global variable and display the initial recipe
@@ -156,13 +162,19 @@ function renderRecipe(){
     $('.js-recipe').attr("formaction", recipe_response.hits[NUM_DISPLAY].recipe.url);
 }
 
+//call next recipe or set error message
 function setNextRecipe(){
     $('.food-choices').on('click', '.js-next-recipe', function(){
         console.log('preparing to display next recipe');
         NUM_DISPLAY++;
-        if(NUM_DISPLAY % 5 === 0){
-            $('.food-choices').html(`<p>We showed you five foods but nothing sounded good! Maybe you should eat out. Here are a few tasty restaurants close by that we think you'll like.</p>`);
-        }else{
+        if(NUM_DISPLAY % MAX_RESULTS === 0){ //if we've displayed the max recipes the app should display at once
+            $('.food-choices').html(`<p>We showed you five foods but nothing sounded good! Maybe you should eat out. Here are a few tasty restaurants that deliver in your city that we think you'll like.</p>`);
+        }else if(!recipe_response.hits[NUM_DISPLAY]){ //if we've displayed all recipes
+            //add to food-prefs because food-choices gets cleared out above
+            //refactor: add class specifically for error messages
+            $('.food-preferences').html(`<p>We've run out of recipes to show you! Try searching for different ingredients</p>`);
+            resetAnswers();
+        }else{ //otherwise we're okay to loop to next recipe
             renderRecipe();
         }
     });
@@ -181,10 +193,14 @@ function fetchDesc(name){
             throw new Error(response.statusText);
         })
         //the most accurtae description has been early in the array
+       // stringent wiki
         .then(responseJson => setDesc(responseJson[2][0], responseJson[3][0]))
+        //todo: less stringent wiki
+        //.then(responseJson => setDesc(responseJson))
         .catch(err => console.log(`Description can't be retrived. Error: ${err.message}`)); 
 }
 
+//add the description of the dish to the page
 function setDesc(description, link){
     console.log('setting wikipedia desciption')
     if(description){
@@ -200,12 +216,51 @@ function setDesc(description, link){
 function formatQueryParams(){
     console.log(`formatQueryParams ran`);
     let queryItems = 'app_id=' + app_id_recipe + '&app_key=' + app_key_recipe;
+    let ingredients = [];
     userSelections.forEach(function(item){
-        //need to comma separate q params
-         queryItems +=`&`+ QUESTIONS_AND_ANSWERS[item.name].answer.paramRecipe + `=` + item.id;
+        //ingredients/q need to be comma separated to search for recipes that include them
+         if(QUESTIONS_AND_ANSWERS[item.name].answer.paramRecipe === 'q'){ 
+             ingredients.push(item.id);
+         }else if(QUESTIONS_AND_ANSWERS[item.name].answer.paramRecipe){ //if recipe param exists
+            queryItems +=`&`+ QUESTIONS_AND_ANSWERS[item.name].answer.paramRecipe + `=` + item.id;
+         }
     })
+    ingredients.join(',');
+    queryItems += `&q=` + ingredients;
     console.log(queryItems);
     return queryItems;
+}
+
+//format restaurant and recipe query params
+//todo: separate to separate functions?
+/*function formatQueryParams(){
+    console.log(`formatQueryParams ran`);
+    recipe_api_call += 'app_id=' + app_id_recipe + '&app_key=' + app_key_recipe;
+    let ingredients = [];
+    let cuisines = [];
+    userSelections.forEach(function(item){
+        //ingredients/q need to be comma separated to search for recipes that include them
+         if(QUESTIONS_AND_ANSWERS[item.name].answer.paramRecipe === 'q'){ 
+             ingredients.push(item.id);
+         }else if(QUESTIONS_AND_ANSWERS[item.name].answer.paramRecipe){ //if recipe param exists
+            recipe_api_call +=`&`+ QUESTIONS_AND_ANSWERS[item.name].answer.paramRecipe + `=` + item.id;
+         }else if(QUESTIONS_AND_ANSWERS[item.name].answer.paramRestaurant === 'cuisines'){
+            cuisines.push(item.id);
+         }
+    })
+    ingredients.join(',');
+    restaurants.join(',');
+    recipe_api_call += `&q=` + ingredients;
+    restaurant_api_call += `q=` + ingredients;
+    recipe_api_call += recipeQueryItems;
+    restaurant_api_call += '&cuisines=' + cuisines;
+    console.log(recipe_api_call);
+    console.log(restaurant_api_call);
+}*/
+
+//get list of restaurants using restaurant API
+function getRestaurants(cityID){
+
 }
 
 function handleCookApp(){
