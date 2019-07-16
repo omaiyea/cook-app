@@ -30,6 +30,7 @@ let userSelections = [];
 let restaurant_api_call = BASE_URL_RESTAURANT;
 let recipe_desc = '';
 let restaurant_query = '';
+let recipe_api_call = BASE_URL_RECIPE;
 
 //button value for values that won't convey inputs from user
 //will be changed using jQuery depending when it's needed

@@ -119,8 +119,9 @@ function getCityId(city, state){
 //fetch recipe response data
 function getRecipes(){
     console.log('getRecipes ran');
-    let url = BASE_URL_RECIPE + formatQueryParams();
-    fetch(url)
+    $('.food-preferences').empty();
+    formatQueryParams();
+    fetch(recipe_api_call)
     .then(response => response.json())
     .then(responseJson => setRecipeResponse(responseJson))
     .catch(err => {
@@ -213,7 +214,7 @@ function setDesc(description, link){
 }
 
 //format query parameters for recipe API
-function formatQueryParams(){
+/*function formatQueryParams(){
     console.log(`formatQueryParams ran`);
     let queryItems = 'app_id=' + app_id_recipe + '&app_key=' + app_key_recipe;
     let ingredients = [];
@@ -229,11 +230,11 @@ function formatQueryParams(){
     queryItems += `&q=` + ingredients;
     console.log(queryItems);
     return queryItems;
-}
+}*/
 
 //format restaurant and recipe query params
 //todo: separate to separate functions?
-/*function formatQueryParams(){
+function formatQueryParams(){
     console.log(`formatQueryParams ran`);
     recipe_api_call += 'app_id=' + app_id_recipe + '&app_key=' + app_key_recipe;
     let ingredients = [];
@@ -249,14 +250,13 @@ function formatQueryParams(){
          }
     })
     ingredients.join(',');
-    restaurants.join(',');
+    cuisines.join(',');
     recipe_api_call += `&q=` + ingredients;
     restaurant_api_call += `q=` + ingredients;
-    recipe_api_call += recipeQueryItems;
     restaurant_api_call += '&cuisines=' + cuisines;
     console.log(recipe_api_call);
     console.log(restaurant_api_call);
-}*/
+}
 
 //get list of restaurants using restaurant API
 function getRestaurants(cityID){
