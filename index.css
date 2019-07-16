@@ -15,7 +15,7 @@ legend, h3{
     font-size: 3em;
 }
 
-p, input, label, ul, li, sub{
+p, input, button, label, ul, li, sub{
     font-family: 'Quattrocento', Serif;
 }
 
@@ -39,44 +39,14 @@ body{
     text-align: center;
 }
 
-/*restyle the checkbox to look like a button by removing original styling then replacing it*/
-/*still keep accesilbe*/
-.button-style input[type="checkbox"] {
-    width: 6em;
-    height: 2em;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    -ms-appearance: none;
-    appearance: none;
-    border-radius:20px;
-    border:1px solid #eeeeee;
-}
- 
-
-.button-style input:checked{
-    background-color: #eee;
-}
-
-/*add pointer to whole button*/
-.button-style input, label:hover{
-    cursor: pointer;
-}
-
-/*special formatting to make checkbox options look like buttons*/
-.button-style label{
-    display: inline-flex; /*display the options in a row */
-    justify-content: center; /*center the label's span text*/
-    margin: 5px; /*space out elements so they're easier to read*/
+label{
     text-transform: capitalize;
-}
-
-.button-style span{
-    position: absolute; /*position the labels inside the boxes*/
-    align-self: center; /*center the labels inside the boxes*/
+    display: inline-block;
+    margin-left: 10px;
 }
 
 /*style buttons throughout the app */
-input[type="submit"], input[type="button"]{
+input[type="submit"], button, input[type="button"]{
     display: block;
     margin: auto;
     width: 75%;
@@ -87,7 +57,7 @@ input[type="submit"], input[type="button"]{
     border-radius: 20px;
 }
 
-input[type="submit"], input[type="button"]:hover{
+input[type="submit"], button, input[type="button"]:hover{
     cursor: pointer;
 }
 

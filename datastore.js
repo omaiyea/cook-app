@@ -31,6 +31,7 @@ let restaurant_api_call = BASE_URL_RESTAURANT;
 let recipe_desc = '';
 let restaurant_query = '';
 let recipe_api_call = BASE_URL_RECIPE;
+let recipe_response = '';
 
 //button value for values that won't convey inputs from user
 //will be changed using jQuery depending when it's needed
@@ -94,7 +95,7 @@ const CUISINE_ANSWERS = {
 
 const INGREDIENTS = {
     paramRecipe: "q", 
-    options: ["chicken", "beef", "broccoli", "cauliflower", "cheese"]
+    options: ["chicken", "beef", "tofu", "tempeh", "broccoli", "cauliflower", "spinach", "kale", "tomatoes", "cheese", "tortillas"]
 };
 
 //commonly excluded ingredients so separate data structure than commonly used ingredients
@@ -176,5 +177,12 @@ const QUESTIONS_AND_ANSWERS = [
 const RECIPE_NEXT_BUTTONS = `<form><button class="js-recipe" target="_blank">Yas - take me to the recipe</button>
 <button class="js-next-recipe">Pass - show me another recipe</button></form>`;
 
-//vars to display user's preferences
+//html to introduce restaurant text
+const RESTAURANT_MESSAGE = `<p>We showed you five foods but nothing sounded good! </p?`;
+const RESTAURANT_ERROR = `<p>Unfortunately, we couldn't find any restaurants we think you'd like near you!
+We could show you five more dishes to make, or you could redo your food preferences.`;
+const RESTAURANT_INTRO = `<p>Maybe you should eat out. Here are a few tasty restaurants that deliver in your city that we think you'll like.</p>`;
 
+//buttons to either show more recipes or redo quiz
+const RESTAURANT_NEXT_BUTTONS = `<form><button class="">Let me redo my preferences</button>
+<button class="js-next-recipe">Show me more recipes</button></form>`;

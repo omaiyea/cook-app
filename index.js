@@ -112,7 +112,7 @@ function getCityId(city, state){
     let url = BASE_URL_CITY + LOCATION.param + `=` + encodeURIComponent(city) + '%2C%20' + encodeURIComponent(state);
     fetch(url, RESTAURANT_OPTIONS)
         .then(response => response.json())
-        .then(responseJson => (getRestaurants(responseJson.location_suggestions[0].id)))
+        .then(responseJson => (setCityID(responseJson.location_suggestions[0].id)))
         .catch(err => $('.food-preferences').text(`Something went wrong: ${err.message}`));
 }
 
@@ -146,7 +146,6 @@ function resetAnswers(){
 function setRecipeResponse(responseJson){
     console.log('saving recipe response data')
     recipe_response = responseJson;
-    console.log(recipe_response);
     renderRecipe();
 }
 
@@ -168,11 +167,13 @@ function setNextRecipe(){
     $('.food-choices').on('click', '.js-next-recipe', function(){
         console.log('preparing to display next recipe');
         NUM_DISPLAY++;
+        console.log(NUM_DISPLAY);
         if(NUM_DISPLAY % MAX_RESULTS === 0){ //if we've displayed the max recipes the app should display at once
-            $('.food-choices').html(`<p>We showed you five foods but nothing sounded good! Maybe you should eat out. Here are a few tasty restaurants that deliver in your city that we think you'll like.</p>`);
+            getRestaurants();
         }else if(!recipe_response.hits[NUM_DISPLAY]){ //if we've displayed all recipes
             //add to food-prefs because food-choices gets cleared out above
             //refactor: add class specifically for error messages
+            comsole.log('empty');
             $('.food-preferences').html(`<p>We've run out of recipes to show you! Try searching for different ingredients</p>`);
             resetAnswers();
         }else{ //otherwise we're okay to loop to next recipe
@@ -210,27 +211,7 @@ function setDesc(description, link){
         recipe_desc = "<p>A yummy dish!</p>";
     }
     $('.js-description').html(recipe_desc);
-    console.log(recipe_desc);
 }
-
-//format query parameters for recipe API
-/*function formatQueryParams(){
-    console.log(`formatQueryParams ran`);
-    let queryItems = 'app_id=' + app_id_recipe + '&app_key=' + app_key_recipe;
-    let ingredients = [];
-    userSelections.forEach(function(item){
-        //ingredients/q need to be comma separated to search for recipes that include them
-         if(QUESTIONS_AND_ANSWERS[item.name].answer.paramRecipe === 'q'){ 
-             ingredients.push(item.id);
-         }else if(QUESTIONS_AND_ANSWERS[item.name].answer.paramRecipe){ //if recipe param exists
-            queryItems +=`&`+ QUESTIONS_AND_ANSWERS[item.name].answer.paramRecipe + `=` + item.id;
-         }
-    })
-    ingredients.join(',');
-    queryItems += `&q=` + ingredients;
-    console.log(queryItems);
-    return queryItems;
-}*/
 
 //format restaurant and recipe query params
 //todo: separate to separate functions?
@@ -238,29 +219,69 @@ function formatQueryParams(){
     console.log(`formatQueryParams ran`);
     recipe_api_call += 'app_id=' + app_id_recipe + '&app_key=' + app_key_recipe;
     let ingredients = [];
-    let cuisines = [];
+    let cuisine = [];
     userSelections.forEach(function(item){
         //ingredients/q need to be comma separated to search for recipes that include them
          if(QUESTIONS_AND_ANSWERS[item.name].answer.paramRecipe === 'q'){ 
              ingredients.push(item.id);
          }else if(QUESTIONS_AND_ANSWERS[item.name].answer.paramRecipe){ //if recipe param exists
             recipe_api_call +=`&`+ QUESTIONS_AND_ANSWERS[item.name].answer.paramRecipe + `=` + item.id;
-         }else if(QUESTIONS_AND_ANSWERS[item.name].answer.paramRestaurant === 'cuisines'){
-            cuisines.push(item.id);
+         }else if(QUESTIONS_AND_ANSWERS[item.name].answer.paramRestaurant === 'cuisine'){
+            cuisine.push(item.id);
          }
     })
     ingredients.join(',');
-    cuisines.join(',');
+    cuisine.join(',');
     recipe_api_call += `&q=` + ingredients;
     restaurant_api_call += `q=` + ingredients;
-    restaurant_api_call += '&cuisines=' + cuisines;
-    console.log(recipe_api_call);
+    restaurant_api_call += '&cuisine=' + cuisine;
+}
+
+//add city ID to API call
+//future: rewrite so all restaurant params are together/separate from recipe
+function setCityID(cityID){
+    console.log('adding city to api key')
+    restaurant_api_call += '&entity_id=' + cityID;
     console.log(restaurant_api_call);
 }
 
-//get list of restaurants using restaurant API
-function getRestaurants(cityID){
+//fetch restaurants with api
+function getRestaurants(){
+    console.log('getting restaurants');
+    $('.food-preferences').empty();
+    $('.js-header').empty();
+    $('.js-description').empty();
+    $('.js-recipe-link').empty();
+    fetch(restaurant_api_call, RESTAURANT_OPTIONS)
+    .then(response => {
+        if (response.ok){ 
+            return response.json();
+        }
+        throw new Error(response.statusText);
+    })
+    .then(responseJson => renderRestaurants(responseJson))
+    .catch(err => console.log(`Description can't be retrived. Error: ${err.message}`));  
+    console.log(restaurant_api_call);   
+}
 
+//display restaurants to user and allow them to redo choices if desired
+function renderRestaurants(responseJson){
+    console.log(responseJson);
+    $('header').html("<h2>You should eat out!</h2>");
+    $('.js-header').html(RESTAURANT_MESSAGE);
+    if(responseJson.restaurants.length){
+        $('.js-description').html(RESTAURANT_INTRO);
+        for(i=0; i<MAX_RESULTS; i++){
+            if(responseJson.restaurants.restaurants[i].restaurant.R.has_menu_status.delivery === 1){
+                $('.js-description').append(responseJson.restaurants.restaurants[i].restaurant.name);
+                $('.js-description').append(responseJson.restaurants.restaurants[i].restaurant.menu_url);
+                $('.js-description').append(responseJson.restaurants.restaurants[i].restaurant.photos_url);
+            }
+        }
+    }else{
+        $('.js-description').html(RESTAURANT_ERROR);
+    }
+    $('.js-recipe-link').html(RESTAURANT_NEXT_BUTTONS);
 }
 
 function handleCookApp(){
