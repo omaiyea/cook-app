@@ -44,12 +44,14 @@ const LAST_BUTTON = `<input type="submit" value="Show Me Recipes" class="js-last
 
 /*welcome screen vars*/
 const APP_TITLE = `<h2>(What) Should I Cook?</h2>`;
-const WELCOME_MESSAGE = `<p>Hangry and indecisive?</p>
-<p>Stop endlessly scrolling through the same food pictures until your blood sugar is too low for you to get up and grab your phone charger!</p>
-<p>Let's figure out what you should cook, or if you should just order takeout again.</p>
-<p>Answer some easy questions. Then we'll show you some awesome recipes.</p>
-<p>If you can't decide, we'll show you some of the best places to eat out instead!</p>`;
-const QUESTION_HELPER = `<sub>If more than one answer is true, select them all!</sub>`;
+const WELCOME_MESSAGE = `<p><b>Hangry and indecisive?</b></p>
+<p>Stop endlessly scrolling through the same food pictures until your blood sugar is too low for you to get up and grab your charger!</p>
+<p>Let's figure out what you should cook, or if you should just order takeout again.</p>`;
+const INSTRUCTIONS = `<p>1) Answer some easy questions.<br>
+2) We'll show you some awesome recipes.<br>
+3) If you can't decide, we'll show you some of the best places to eat out instead!</p>`;
+const QUESTION_HELPER = `<sub>If more than one answer applies, select them all!</sub>`;
+const HEADER_IMAGE = `<img src="bg-pic.jpg" alt="fruit bowl picture">`;
 
 /*vars to get user's preferences*/
 
@@ -174,8 +176,8 @@ const QUESTIONS_AND_ANSWERS = [
 ];
 
 //html for buttons to iterate through recipes
-const RECIPE_NEXT_BUTTONS = `<form><button class="js-recipe" target="_blank">Take me to this recipe</button>
-<button class="js-next-recipe">Show me another recipe</button></form>`;
+const RECIPE_NEXT_BUTTONS = `<form><button class="js-recipe" target="_blank">Show me the recipe</button>
+<button class="js-next-recipe">Show me another dish</button></form>`;
 
 //html to introduce restaurant text
 const RESTAURANT_MESSAGE = `<p>We showed you five foods but nothing sounded good! </p?`;
@@ -184,4 +186,4 @@ const RESTAURANT_INTRO = `<p>Maybe you should eat out. Here are a few tasty rest
 const RESTAURANT_REDO = `<p>We could show you five more dishes to make, or you could redo your food preferences. </p>`;
 //buttons to either show more recipes or redo quiz
 const RESTAURANT_NEXT_BUTTONS = `<form><button class="">Redo my preferences</button>
-<button class="js-next-recipe">Show me more recipes</button></form>`;
+<button class="js-next-recipe">Show me more dishes</button></form>`;

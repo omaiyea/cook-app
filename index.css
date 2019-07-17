@@ -1,8 +1,10 @@
+/*****design for mobile here, section for larger screens below*****/
 *{
     box-sizing: border-box;
 }
 
-h2, legend, h3{
+/***fonts and sizes***/
+h2, legend, h3, button, input, label{
     font-family: 'Oswald', Sans-Serif;
     text-transform: uppercase; 
 }
@@ -15,11 +17,11 @@ legend, h3{
     font-size: 3em;
 }
 
-p, input, button, label, ul, li, sub{
-    font-family: 'Quattrocento', Serif;
+p, sub{
+    font-family: 'Open Sans', Serif;
 }
 
-p {
+p, ol{
     font-size: 1.7em;
 }
 
@@ -27,61 +29,119 @@ input, label{
     font-size: 1.5em;
 }
 
-ul, li{
-    font-size: 1.2em;   
-}
-
 sub{
     font-size: 1em;
 }
 
-body{
-    text-align: center;
+b{
+    font-weight: bolder;
+    text-decoration: underline;
 }
 
+/*center text and remove default padding*/
+body{
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background-color: #ffe64e;
+}
+
+/***form styles***/
+/*turn labels into boxes/buttons*/
 label{
     text-transform: capitalize;
-    display: inline-block;
-    margin-left: 10px;
+    display: block;
+    margin: auto;
+    padding:5px;
+    padding-left: 25px; /*for some reason it's off center unless this happens*/
+    border:1px solid #CCC; 
+    cursor:pointer;
+   /* z-index:90;*/
+    width: 400px;
+}
+
+/*hide checkbox/radio buttons from user but still keep them accesible*/
+/*only for food preferences forms*/
+.food-pref-input input[type="checkbox"], input[type="radio"] {
+    opacity:0.011;
+    z-index:100;
+}
+
+/*highlight answers selected by user*/
+.food-pref-input input[type="checkbox"]:checked + label{
+    background: #ffe64e;
+}
+
+/*highlihgt option user is hovering/keyboarding over*/
+.food-pref-input input[type="checkbox"]:focus + label{
+    background:#ddd;
+}
+
+.food-pref-input label:hover{
+    background:#DDD;
 }
 
 /*style buttons throughout the app */
-input[type="submit"], button, input[type="button"]{
+input[type="submit"], button{
     display: block;
     margin: auto;
-    width: 75%;
-    margin-top: 5px;
-    background-color: black;
+    width: 65%;
+    background-color: #ff5757;
+    padding: 5px 0px;
     color: white;
     font-size: 2em;
     border-radius: 20px;
 }
 
-input[type="submit"], button, input[type="button"]:hover{
+input[type="submit"], button:hover{
     cursor: pointer;
-}
-
-/*style input boxes when user is selecting city*/
-/*needs a differenty styling than the radio buttons*/
-.text-inputs label{
-    margin-top: 5px;
-    display: block;
-}
-
-/*center image*/
-.food-choices img{
-    display: block;
-    margin: auto;
-    max-width: 90%;
-    max-height: 90%;
 }
 
 fieldset{
     border: 0;
 }
 
+/*style input boxes when user is selecting city*/
+.text-inputs label{
+    margin-top: 5px;
+    display: block;
+}
+
+/*center image*/
+.food-choices img, header img{
+    display: block;
+    margin: auto;
+    max-height: 90%;
+    max-width: 100%;
+}
+
+/*some form elements need to be hidden by default*/
 .hidden{
     overflow: hidden;
     opacity: 0;   
     max-height: 0;
+}
+
+/***colors for each section***/
+.title, .instructions{
+    background-color: #ffe64e; 
+    color: #3b3838;
+}
+
+.subtitle{
+    padding: 3px 0px;
+    background-color: #3b3838;
+    color: #fff;
+}
+
+.buttons{
+    padding: 9px 0px;
+    background-color: white;
+}
+
+/****desktop/larging screen styling****/
+@media only screen and (min-width: 800px){
+    input[type="submit"], button{
+        width: 25%;
+    }
 }

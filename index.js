@@ -2,8 +2,10 @@
 function renderApp(){
     console.log('renderApp ran');
     $('.title').html(APP_TITLE);
+    $('.title').append(HEADER_IMAGE);
     $('.subtitle').html(WELCOME_MESSAGE);
-    $('.food-preferences').html(BUTTON);
+    $('.instructions').html(INSTRUCTIONS);
+    $('.buttons').html(BUTTON);
     $('input[type="submit"]').prop('value', "Let's Start!");
 }
 
@@ -27,12 +29,12 @@ function generateQuestion(){
     let questionHTML = '';
     //todo: update this so it's less repetitive
     if(QUESTIONS[QUESTION_COUNTER].type === "yesNo"){
-        questionHTML += `<form class="js-next-page"><fieldset name="initialQuestion">
+        questionHTML += `<form class="food-pref-input"><fieldset name="initialQuestion">
         <legend>${QUESTIONS[QUESTION_COUNTER].question}</legend>` + YES_NO_RADIO + `</fieldset>`
         questionHTML += generateMultipleChoices();
         questionHTML += NEXT_BUTTON + `</form>`;
     }else if(QUESTIONS[QUESTION_COUNTER].type === "multiChoice"){
-        questionHTML += `<form class="js-next-page"><fieldset name="initialQuestion">
+        questionHTML += `<form class="food-pref-input"><fieldset name="initialQuestion">
         <legend>${QUESTIONS[QUESTION_COUNTER].question}</legend>`;
         questionHTML += generateMultipleChoices();
         questionHTML += NEXT_BUTTON + `</form>`;
@@ -55,8 +57,8 @@ function generateMultipleChoices(){
     }
     let qaData = QUESTIONS_AND_ANSWERS.find(a => a.qid === QUESTION_COUNTER);
     qaData.answer.options.forEach(function(option){
-        multiChoiceHTML += `<label for="` + option + `"><span>` + option + `</span>
-        <input type="checkbox" id="` + option + `" name="` + QUESTIONS_AND_ANSWERS.indexOf(qaData) + `" type="${QUESTIONS[QUESTION_COUNTER].type}"></label>`;
+        multiChoiceHTML += `<input type="checkbox" id="` + option + `" name="` + QUESTIONS_AND_ANSWERS.indexOf(qaData) + `" type="${QUESTIONS[QUESTION_COUNTER].type}">
+        <label for="` + option + `">` + option + `</label>`;
     });
     multiChoiceHTML += `</fieldset>`; //closes fieldset for both yes/no and multichoice questions
     return multiChoiceHTML;
