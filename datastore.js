@@ -50,7 +50,7 @@ const WELCOME_MESSAGE = `<p><b>Hangry and indecisive?</b></p>
 const INSTRUCTIONS = `<p>1) Answer some easy questions.<br>
 2) We'll show you some awesome recipes.<br>
 3) If you can't decide, we'll show you some of the best places to eat out instead!</p>`;
-const QUESTION_HELPER = `<sub>If more than one answer applies, select them all!</sub>`;
+const QUESTION_HELPER = `<sup>If more than one answer applies, select them all!</sup>`;
 const HEADER_IMAGE = `<img src="bg-pic.jpg" alt="fruit bowl picture">`;
 
 /*vars to get user's preferences*/

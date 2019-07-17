@@ -13,11 +13,8 @@ function renderApp(){
 function renderQuestion(){
     $('.food-preferences').on('click', '.js-next-question', function(event){
         event.preventDefault();
+        $('header').empty();
         console.log('renderQuestion ran');
-        $('.subtitle').html(QUESTION_HELPER);
-        if(userSelections){
-            let text = `<p>So far, we're looking for ${userSelections.name}`
-        }
         $('.food-preferences').html(generateQuestion());
         QUESTION_COUNTER++;
     });
@@ -27,19 +24,21 @@ function renderQuestion(){
 function generateQuestion(){
     console.log('generating question');
     let questionHTML = '';
+    let helperText = formatStatusString();
     //todo: update this so it's less repetitive
     if(QUESTIONS[QUESTION_COUNTER].type === "yesNo"){
         questionHTML += `<form class="food-pref-input"><fieldset name="initialQuestion">
-        <legend>${QUESTIONS[QUESTION_COUNTER].question}</legend>` + YES_NO_RADIO + `</fieldset>`
-        questionHTML += generateMultipleChoices();
+        <legend><h2>${QUESTIONS[QUESTION_COUNTER].question}</h2>` + helperText + `</legend>` + YES_NO_RADIO + `</fieldset>`
+        questionHTML += `<div class="multi-choices">` + generateMultipleChoices() + `</div>`;
         questionHTML += NEXT_BUTTON + `</form>`;
     }else if(QUESTIONS[QUESTION_COUNTER].type === "multiChoice"){
         questionHTML += `<form class="food-pref-input"><fieldset name="initialQuestion">
-        <legend>${QUESTIONS[QUESTION_COUNTER].question}</legend>`;
-        questionHTML += generateMultipleChoices();
+        <legend><h2>${QUESTIONS[QUESTION_COUNTER].question}</h2>` + helperText + `</legend>`;
+        questionHTML += `<div class="multi-choices">` + generateMultipleChoices() + `</div>`;
         questionHTML += NEXT_BUTTON + `</form>`;
     }else{ //currently, this is the location/last question
-        questionHTML += `<form class="js-location"><legend>${QUESTIONS[QUESTION_COUNTER].question}</legend>`;
+        questionHTML += `<form class="js-location"><legend>
+        <h2>${QUESTIONS[QUESTION_COUNTER].question}</h2>` + helperText + `</legend>`;
         questionHTML += CITY + STATE;
         questionHTML += LAST_BUTTON + `</form>`;
     }
@@ -236,6 +235,48 @@ function formatQueryParams(){
     cuisine.join(',');
     recipe_api_call += `&q=` + ingredients;
     restaurant_api_call += '&cuisine=' + cuisine;
+}
+
+/*this whole function could be improved in the future when have more time*/
+function formatStatusString(){
+    let helperText = `<sup>So far, we're looking for `;
+    let withText = [];
+    let dietText = [];
+    let withoutText = [];
+    let restaurantText = [];
+    if(userSelections.length){ 
+        userSelections.forEach(function(item){
+            if(QUESTIONS_AND_ANSWERS[item.name].answer.paramRecipe === 'q'){
+                withText.push(`<b>` + item.id + `</b>`);
+            }else if (QUESTIONS_AND_ANSWERS[item.name].answer.paramRecipe === 'healthLabels'){
+                dietText.push(`<b>` + item.id + `</b>`);
+            }else if(QUESTIONS_AND_ANSWERS[item.name].answer.paramRecipe === 'excluded'){
+                withoutText.push(`<b>` + item.id + `</b>`);
+            }else if (QUESTIONS_AND_ANSWERS[item.name].answer.paramRestaurant === 'cuisine'){
+                restaurantText.push(`<b>` + item.id + `</b>`);
+            }
+        });
+        if(dietText.length){
+            dietText.join(', ');
+            helperText += dietText;
+        }
+        if(withText.length){
+            withText.join(', ');
+            helperText += ` recipes with ` + withText;
+        }
+        if(withoutText.length){
+            withoutText.join(', ');
+            helperText += ` but without ` + withoutText;
+        }
+        if(restaurantText.length){
+            restaurantText.join(', ');
+            helperText += `, and for ` + restaurantText + ` restaurants`;
+        }
+        helperText += `.</sup>`
+    }else{
+        helperText = QUESTION_HELPER;
+    }
+    return helperText;
 }
 
 //add city ID to API call and limit data returned

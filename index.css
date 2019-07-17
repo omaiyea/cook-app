@@ -4,20 +4,21 @@
 }
 
 /***fonts and sizes***/
-h2, legend, h3, button, input, label{
+h2, h3, button, input, label{
     font-family: 'Oswald', Sans-Serif;
     text-transform: uppercase; 
+    line-height: 1;
 }
 
 h2{
     font-size: 4em;
 }
 
-legend, h3{
+h3{
     font-size: 3em;
 }
 
-p, sub{
+p, sup{
     font-family: 'Open Sans', Serif;
 }
 
@@ -29,8 +30,9 @@ input, label{
     font-size: 1.5em;
 }
 
-sub{
-    font-size: 1em;
+sup{
+    font-size: 0.8em;
+    margin-top: -10px; /*there's a lot of spacing above for some reason otherwise*/
 }
 
 b{
@@ -49,15 +51,17 @@ body{
 /***form styles***/
 /*turn labels into boxes/buttons*/
 label{
-    text-transform: capitalize;
+    text-transform: uppercase;
     display: block;
     margin: auto;
     padding:5px;
     padding-left: 25px; /*for some reason it's off center unless this happens*/
-    border:1px solid #CCC; 
+    border:1px solid #fff; 
+    background: #fff;
     cursor:pointer;
    /* z-index:90;*/
-    width: 400px;
+    width: 65%;
+    color: #000;
 }
 
 /*hide checkbox/radio buttons from user but still keep them accesible*/
@@ -128,10 +132,11 @@ fieldset{
     color: #3b3838;
 }
 
-.subtitle{
+.subtitle, .multi-choices{
     padding: 3px 0px;
     background-color: #3b3838;
     color: #fff;
+    margin: 0;
 }
 
 .buttons{
