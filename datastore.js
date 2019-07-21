@@ -176,8 +176,8 @@ const QUESTIONS_AND_ANSWERS = [
 ];
 
 //html for buttons to iterate through recipes
-const RECIPE_NEXT_BUTTONS = `<form><button class="js-recipe" target="_blank">Show me the recipe</button>
-<button class="js-next-recipe">Show me another dish</button></form>`;
+const RECIPE_NEXT_BUTTONS = `<form class="next-buttons"><button class="js-recipe" target="_blank">Recipe</button>
+<button class="js-next-recipe">Next dish</button></form>`;
 
 //html to introduce restaurant text
 const RESTAURANT_MESSAGE = `<p>We showed you five foods but nothing sounded good! </p?`;
@@ -185,5 +185,5 @@ const RESTAURANT_ERROR = `<p>Unfortunately, we couldn't find any restaurants we 
 const RESTAURANT_INTRO = `<p>Maybe you should eat out. Here are a few tasty restaurants in your city that we think you'll like.</p>`;
 const RESTAURANT_REDO = `<p>We could show you five more dishes to make, or you could redo your food preferences. </p>`;
 //buttons to either show more recipes or redo quiz
-const RESTAURANT_NEXT_BUTTONS = `<form><button class="">Redo my preferences</button>
-<button class="js-next-recipe">Show me more dishes</button></form>`;
+const RESTAURANT_NEXT_BUTTONS = `<form class="next-buttons"><button class="">Redo prefs</button>
+<button class="js-next-recipe">More dishes</button></form>`;

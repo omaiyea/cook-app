@@ -4,7 +4,7 @@
 }
 
 /***fonts and sizes***/
-h2, h3, button, input, label{
+h2, h3, h4, button, input, label{
     font-family: 'Oswald', Sans-Serif;
     text-transform: uppercase; 
     line-height: 1;
@@ -16,6 +16,10 @@ h2{
 
 h3{
     font-size: 3em;
+}
+
+h4{
+    font-size: 2em;
 }
 
 p, sup{
@@ -104,6 +108,9 @@ fieldset{
     border: 0;
 }
 
+.location label{
+    display: block;
+}
 /*style input boxes when user is selecting city*/
 .text-inputs label{
     margin-top: 5px;
@@ -114,8 +121,15 @@ fieldset{
 .food-choices img, header img{
     display: block;
     margin: auto;
-    max-height: 90%;
-    max-width: 100%;
+}
+
+.food-choices img{
+    max-height: 80%;
+    max-width: 80%;
+}
+
+header img{
+    width: 80%;
 }
 
 /*some form elements need to be hidden by default*/
@@ -138,9 +152,18 @@ fieldset{
     padding-bottom: 15px;
 }
 
-.buttons{
+.start-button{
     padding: 9px 0px;
     background-color: white;
+}
+
+.next-buttons{
+    display: flex;
+    padding: 9px 0px;
+}
+
+.next-buttons button{
+    width: 45%;
 }
 
 /****desktop/larging screen styling****/
@@ -157,6 +180,7 @@ fieldset{
     header img{
         float: right;
         width: 40%;
+        margin-right: 25px;
     }
 
     .subtitle{
@@ -171,6 +195,12 @@ fieldset{
         color: #fff;
         padding: 10px 20px;
         position: relative;
-        bottom: 30;
+    }
+}
+
+/*to help image adjust better on larger screens*/
+@media only screen and (min-width: 1200px){
+    header img{
+        width: 30%;
     }
 }

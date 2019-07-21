@@ -5,7 +5,7 @@ function renderApp(){
     $('.image').html(HEADER_IMAGE);
     $('.subtitle').html(WELCOME_MESSAGE);
     $('.instructions').html(INSTRUCTIONS);
-    $('.buttons').html(BUTTON);
+    $('.start-button').html(BUTTON);
     $('input[type="submit"]').prop('value', "Let's Start!");
 }
 
@@ -37,7 +37,7 @@ function generateQuestion(){
         questionHTML += `<div class="multi-choices">` + generateMultipleChoices() + `</div>`;
         questionHTML += NEXT_BUTTON + `</form>`;
     }else{ //currently, this is the location/last question
-        questionHTML += `<form class="js-location"><legend>
+        questionHTML += `<form class="location"><legend>
         <h2>${QUESTIONS[QUESTION_COUNTER].question}</h2>` + helperText + `</legend>`;
         questionHTML += CITY + STATE;
         questionHTML += LAST_BUTTON + `</form>`;
@@ -99,7 +99,7 @@ function getMultiChoice(){
 //since this is the last question, also display the recipes at the end with getRecipes
 //todo: separate getRecipes
 function getUserLocation(){
-    $('.food-preferences').on('submit', '.js-location', function(){
+    $('.food-preferences').on('submit', '.location', function(){
         console.log('storing location');
         let city = $('input[type="text"]').val();
         let state = $('#state').val();
@@ -146,6 +146,7 @@ function resetAnswers(){
 //save the recipe response data in a global variable and display the initial recipe
 function setRecipeResponse(responseJson){
     console.log('saving recipe response data')
+    console.log(responseJson);
     recipe_response = responseJson;
     renderRecipe();
 }
@@ -315,8 +316,10 @@ function renderRestaurants(responseJson){
         $('.js-description').html(RESTAURANT_INTRO);
         for(i=0; i<MAX_RESULTS; i++){
             $('.js-description').append(`<h3>` + responseJson.restaurants[i].restaurant.name + `</h3>`);
-            $('.js-description').append(`<img src="` + responseJson.restaurants[i].restaurant.featured_image + `" alt="restaurant picture of `+ responseJson.restaurants[i].restaurant.name + `">`);
-            $('.js-description').append(`<a href="` + responseJson.restaurants[i].restaurant.menu_url + `" target="_blank">Menu</a>`);
+            $('.js-description').append(`<a href="` + responseJson.restaurants[i].restaurant.menu_url + `" target="_blank"><h4>Menu</h4></a>`); 
+            if(responseJson.restaurants[i].restaurant.featured_image){ // not all restaurants have an image
+                $('.js-description').append(`<img src="` + responseJson.restaurants[i].restaurant.featured_image + `" alt="restaurant picture of `+ responseJson.restaurants[i].restaurant.name + `">`);
+            }
         }
     }else{
         $('.js-description').html(RESTAURANT_ERROR);
