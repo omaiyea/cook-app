@@ -49,7 +49,7 @@ const WELCOME_MESSAGE = `<p><b>Hangry and indecisive?</b></p>
 <p>Let's figure out what you should cook, or if you should just order takeout again.</p>`;
 const INSTRUCTIONS = `<p>1) Answer some easy questions.<br>
 2) We'll show you some awesome recipes.<br>
-3) If you can't decide, we'll show you some of the best places to eat out instead!</p>`;
+3) If you can't decide what to cook, we'll show you some of the best places to eat out instead!</p>`;
 const QUESTION_HELPER = `<sup>If more than one answer applies, select them all!</sup>`;
 const HEADER_IMAGE = `<img src="bg-pic.jpg" alt="fruit bowl picture">`;
 
@@ -59,7 +59,7 @@ let QUESTION_COUNTER = 0; //loops through questions
 
 //array for questions since they're least likely to change
 const QUESTIONS = [
-    {question: "First things first, which ingredients do you want to use?", type: "multiChoice"}, 
+    {question: "First, which ingredients do you want to use?", type: "multiChoice"}, 
     {question: "And are there ingredients that you can't eat?", type: "yesNo"},
     {question: "Are you on any diets?", type: "yesNo"},
     {question: "What do you usually order for takeout?", type: "multiChoice"},
@@ -72,8 +72,8 @@ const FOLLOWUP_QUESTIONS = [
 ];
 
 //used to generate yes/no answers for the yes/no questions
-const YES_NO_RADIO = `<label>Yes<input type="radio" name="yesNo" value="Yes" required></label>
-<label>No<input type="radio" name="yesNo" value="No" required></label>`;
+const YES_NO_RADIO = `<input type="radio" name="yesNo" value="Yes" required><label for="Yes">Yes</label>
+<input type="radio" name="yesNo" value="No"><label for="No">No</label>`;
 
 //object for each answer to be mapped to questions and query parameters to get data from differentn apis
 //made this way since answers and api parameters may change 
@@ -106,7 +106,7 @@ const EXCLUDED_INGREDIENTS = {
     options: ["soy", "pork", "peanuts", "dairy", "eggs", "shellfish", "sesame"]
 };
 
-const CITY = `<label for="city">City: <input type="text" required></input></label>`;
+const CITY = `<label for="city">City: <input type="text" id="city" required></input></label>`;
 const STATE = `<label for="state">State: <select id="state">
     <option value="AL">Alabama</option>
     <option value="AK">Alaska</option>

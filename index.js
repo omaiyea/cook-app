@@ -2,7 +2,7 @@
 function renderApp(){
     console.log('renderApp ran');
     $('.title').html(APP_TITLE);
-    $('.title').append(HEADER_IMAGE);
+    $('.image').html(HEADER_IMAGE);
     $('.subtitle').html(WELCOME_MESSAGE);
     $('.instructions').html(INSTRUCTIONS);
     $('.buttons').html(BUTTON);
@@ -29,7 +29,7 @@ function generateQuestion(){
     if(QUESTIONS[QUESTION_COUNTER].type === "yesNo"){
         questionHTML += `<form class="food-pref-input"><fieldset name="initialQuestion">
         <legend><h2>${QUESTIONS[QUESTION_COUNTER].question}</h2>` + helperText + `</legend>` + YES_NO_RADIO + `</fieldset>`
-        questionHTML += `<div class="multi-choices">` + generateMultipleChoices() + `</div>`;
+        questionHTML += `<div class="multi-choices hidden">` + generateMultipleChoices() + `</div>`;
         questionHTML += NEXT_BUTTON + `</form>`;
     }else if(QUESTIONS[QUESTION_COUNTER].type === "multiChoice"){
         questionHTML += `<form class="food-pref-input"><fieldset name="initialQuestion">
@@ -52,7 +52,7 @@ function generateMultipleChoices(){
     let classVal = '';
     //yes no multiple choice answers will be hidden by default
     if(QUESTIONS[QUESTION_COUNTER].type === "yesNo"){
-        multiChoiceHTML += `<fieldset name="secondQuestion" class="hidden">`;
+        multiChoiceHTML += `<fieldset name="secondQuestion">`;
     }
     let qaData = QUESTIONS_AND_ANSWERS.find(a => a.qid === QUESTION_COUNTER);
     qaData.answer.options.forEach(function(option){
@@ -69,9 +69,9 @@ function getYesNo(){
     $('.food-preferences').on('click', 'input[type="radio"]:checked', function(event){
         console.log('getting yes/no values and hiding/showing additional options');
         if($(this).val() === "Yes"){
-            $('fieldset[name="secondQuestion"]').removeClass("hidden");
+            $('.multi-choices').removeClass("hidden");
         }else if($(this).val() === "No"){
-            $('fieldset[name="secondQuestion"]').addClass("hidden");
+            $('.multi-choices').addClass("hidden");
         }
     });
 }

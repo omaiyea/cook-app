@@ -26,7 +26,7 @@ p, ol{
     font-size: 1.7em;
 }
 
-input, label{
+input, label, select{
     font-size: 1.5em;
 }
 
@@ -37,7 +37,6 @@ sup{
 
 b{
     font-weight: bolder;
-    text-decoration: underline;
 }
 
 /*center text and remove default padding*/
@@ -50,13 +49,14 @@ body{
 
 /***form styles***/
 /*turn labels into boxes/buttons*/
-label{
+.multi-choices label{
     text-transform: uppercase;
     display: block;
     margin: auto;
     padding:5px;
     padding-left: 25px; /*for some reason it's off center unless this happens*/
     border:1px solid #fff; 
+    border-radius: 5px;
     background: #fff;
     cursor:pointer;
    /* z-index:90;*/
@@ -66,23 +66,20 @@ label{
 
 /*hide checkbox/radio buttons from user but still keep them accesible*/
 /*only for food preferences forms*/
-.food-pref-input input[type="checkbox"], input[type="radio"] {
+.multi-choices input[type="checkbox"]{
     opacity:0.011;
     z-index:100;
 }
 
 /*highlight answers selected by user*/
-.food-pref-input input[type="checkbox"]:checked + label{
+.multi-choices input[type="checkbox"]:checked + label{
     background: #ffe64e;
+    border:1px solid #ffe64e; 
 }
 
-/*highlihgt option user is hovering/keyboarding over*/
-.food-pref-input input[type="checkbox"]:focus + label{
-    background:#ddd;
-}
-
-.food-pref-input label:hover{
-    background:#DDD;
+.multi-choices label:hover{
+    transform: scale(1.01); 
+    transition-duration: 0.3s;
 }
 
 /*style buttons throughout the app */
@@ -91,10 +88,12 @@ input[type="submit"], button{
     margin: auto;
     width: 65%;
     background-color: #ff5757;
-    padding: 5px 0px;
+    border: 1px solid #ff5757;
+    padding: 5px 3px;
     color: white;
     font-size: 2em;
     border-radius: 20px;
+    margin-top: 5px;
 }
 
 input[type="submit"], button:hover{
@@ -136,7 +135,7 @@ fieldset{
     padding: 3px 0px;
     background-color: #3b3838;
     color: #fff;
-    margin: 0;
+    padding-bottom: 15px;
 }
 
 .buttons{
@@ -148,5 +147,30 @@ fieldset{
 @media only screen and (min-width: 800px){
     input[type="submit"], button{
         width: 25%;
+    }
+
+    header{
+        position: relative;
+        margin-bottom: 60px;
+    }
+
+    header img{
+        float: right;
+        width: 40%;
+    }
+
+    .subtitle{
+        background-color: #ffe64e;
+        color:#3b3838;
+        padding-left: 25px;
+        width: 60%;
+    }
+
+    .instructions{
+        background-color: #3b3838;
+        color: #fff;
+        padding: 10px 20px;
+        position: relative;
+        bottom: 30;
     }
 }
