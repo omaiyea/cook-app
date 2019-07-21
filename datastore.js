@@ -185,5 +185,5 @@ const RESTAURANT_ERROR = `<p>Unfortunately, we couldn't find any restaurants we 
 const RESTAURANT_INTRO = `<p>Maybe you should eat out. Here are a few tasty restaurants in your city that we think you'll like.</p>`;
 const RESTAURANT_REDO = `<p>We could show you five more dishes to make, or you could redo your food preferences. </p>`;
 //buttons to either show more recipes or redo quiz
-const RESTAURANT_NEXT_BUTTONS = `<form class="next-buttons"><button class="">Redo prefs</button>
+const RESTAURANT_NEXT_BUTTONS = `<form class="next-buttons"><button class="">Redo my prefs</button>
 <button class="js-next-recipe">More dishes</button></form>`;

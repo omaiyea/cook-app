@@ -257,21 +257,18 @@ function formatStatusString(){
                 restaurantText.push(`<b>` + item.id + `</b>`);
             }
         });
+        console.log(withText);
         if(dietText.length){
-            dietText.join(', ');
-            helperText += dietText;
+            helperText += dietText.join(", ");
         }
         if(withText.length){
-            withText.join(', ');
-            helperText += ` recipes with ` + withText;
+            helperText += ` recipes with ` + withText.join(", ").replace(/, ([^,]*)$/, ' and $1');
         }
         if(withoutText.length){
-            withoutText.join(', ');
-            helperText += ` but without ` + withoutText;
+            helperText += ` but without ` + withoutText.join(", ").replace(/, ([^,]*)$/, ' or $1');
         }
         if(restaurantText.length){
-            restaurantText.join(', ');
-            helperText += `, and for ` + restaurantText + ` restaurants`;
+            helperText += `, and for ` + restaurantText.join(", ").replace(/, ([^,]*)$/, ' or $1') + ` restaurants`;
         }
         helperText += `.</sup>`
     }else{
