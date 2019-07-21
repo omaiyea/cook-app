@@ -208,7 +208,7 @@ function fetchDesc(name){
 function setDesc(description, link){
     console.log('setting wikipedia desciption')
     if(description){
-        recipe_desc = `<p>` + description + ` Read more about the dish on <a href="` + link + `">Wikipedia</a></p>`;
+        recipe_desc = `<p>"` + description + `" (<a href="` + link + `">source</a>)</p>`;
     }else{
         recipe_desc = "<p>A yummy dish!</p>";
     }
