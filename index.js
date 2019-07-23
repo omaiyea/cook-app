@@ -37,9 +37,9 @@ function generateQuestion(){
         questionHTML += `<div class="multi-choices">` + generateMultipleChoices() + `</div>`;
         questionHTML += NEXT_BUTTON + `</form>`;
     }else{ //currently, this is the location/last question
-        questionHTML += `<form class="location"><legend>
+        questionHTML += `<form class="location"><fieldset><legend>
         <h2>${QUESTIONS[QUESTION_COUNTER].question}</h2>` + helperText + `</legend>`;
-        questionHTML += CITY + STATE;
+        questionHTML += CITY + STATE + `</fieldset>`;
         questionHTML += LAST_BUTTON + `</form>`;
     }
     return questionHTML;
