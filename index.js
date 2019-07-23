@@ -100,6 +100,7 @@ function getMultiChoice(){
 //todo: separate getRecipes
 function getUserLocation(){
     $('.food-preferences').on('submit', '.location', function(){
+        event.preventDefault();
         console.log('storing location');
         let city = $('input[type="text"]').val();
         let state = $('#state').val();
@@ -311,6 +312,7 @@ function renderRestaurants(responseJson){
     $('.js-header').html(RESTAURANT_MESSAGE);
     if(responseJson.restaurants.length){
         $('.js-description').html(RESTAURANT_INTRO);
+        //future: iterate through next set of five rstaurants
         for(i=0; i<MAX_RESULTS; i++){
             $('.js-description').append(`<h3>` + responseJson.restaurants[i].restaurant.name + `</h3>`);
             $('.js-description').append(`<a href="` + responseJson.restaurants[i].restaurant.menu_url + `" target="_blank"><h4>Menu</h4></a>`); 
