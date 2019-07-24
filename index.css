@@ -34,6 +34,15 @@ input, label, select{
     font-size: 1.5em;
 }
 
+input.location, select{
+    font-size: 0.8em;
+}
+
+.location input[type="text"] {
+    width: 70%;
+    height: 20%;
+}
+
 sup{
     font-size: 0.8em;
     margin-top: -10px; /*there's a lot of spacing above for some reason otherwise*/
@@ -83,7 +92,7 @@ body{
 }
 
 .multi-choices label:hover{
-    transform: scale(1.01); 
+    transform: scale(1.03); 
     transition-duration: 0.3s;
 }
 
@@ -91,7 +100,7 @@ body{
 input[type="submit"], button{
     display: block;
     margin: auto;
-    width: 65%;
+    width: 70%;
     background-color: #000;
     border: 1px solid #000;
     padding: 5px 3px;
@@ -99,6 +108,7 @@ input[type="submit"], button{
     font-size: 2em;
     border-radius: 20px;
     margin-top: 5px;
+    padding: 7px 0px;
 }
 
 input[type="submit"]:hover, button:hover{
@@ -113,8 +123,10 @@ fieldset{
 }
 
 .location label{
-    display: inline-block;
+    display: block;
+    padding-bottom: 5px;
 }
+
 /*style input boxes when user is selecting city*/
 .text-inputs label{
     margin-top: 5px;
@@ -172,7 +184,7 @@ header img{
 /****desktop/larging screen styling****/
 @media only screen and (min-width: 800px){
     input[type="submit"], button{
-        width: 25%;
+        width: 30%;
     }
 
     header{
@@ -200,6 +212,11 @@ header img{
         position: relative;
         line-height: 1.5;
     }
+
+    .location input[type="text"] {
+        width: 30%;
+    }
+    
 }
 
 /*to help image adjust better on larger screens*/
