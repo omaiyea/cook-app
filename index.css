@@ -38,7 +38,7 @@ input.location, select{
     font-size: 0.8em;
 }
 
-.location input[type="text"] {
+.location input[type="text"]{
     width: 70%;
     height: 20%;
 }
@@ -67,12 +67,11 @@ body{
     display: block;
     margin: auto;
     padding:5px;
-    padding-left: 25px; /*for some reason it's off center unless this happens*/
+    padding-left: 20px; /*for some reason it's off center unless this happens*/
     border:1px solid #fff; 
     border-radius: 5px;
     background: #fff;
     cursor:pointer;
-   /* z-index:90;*/
     width: 65%;
     color: #000;
 }
@@ -122,15 +121,14 @@ fieldset{
     border: 0;
 }
 
+/*style input boxes when user is selecting city*/
 .location label{
     display: block;
     padding-bottom: 5px;
 }
 
-/*style input boxes when user is selecting city*/
 .text-inputs label{
     margin-top: 5px;
-    display: block;
 }
 
 /*center image*/

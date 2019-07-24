@@ -9,11 +9,17 @@ function renderApp(){
     $('input[type="submit"]').prop('value', "Let's Start!");
 }
 
+function submitform() {
+    var f = document.getElementsByTagName('form')[0];
+    if(!f.checkValidity()) {
+      alert(document.getElementById('example').validationMessage);
+    }
+  }
+
 //displays each question to page
 function renderQuestion(){
     $('.food-preferences').on('click', '.js-next-question', function(event){
         event.preventDefault();
-        console.log($(this).siblings().children());
         $('header').empty();
         console.log('renderQuestion ran');
         $('.food-preferences').html(generateQuestion());
@@ -57,7 +63,7 @@ function generateMultipleChoices(){
     }
     let qaData = QUESTIONS_AND_ANSWERS.find(a => a.qid === QUESTION_COUNTER);
     qaData.answer.options.forEach(function(option){
-        multiChoiceHTML += `<input type="checkbox" id="` + option + `" name="` + QUESTIONS_AND_ANSWERS.indexOf(qaData) + `" type="${QUESTIONS[QUESTION_COUNTER].type}" required>
+        multiChoiceHTML += `<input type="checkbox" id="` + option + `" name="` + QUESTIONS_AND_ANSWERS.indexOf(qaData) + `" type="${QUESTIONS[QUESTION_COUNTER].type}">
         <label for="` + option + `">` + option + `</label>`;
     });
     multiChoiceHTML += `</fieldset>`; //closes fieldset for both yes/no and multichoice questions
@@ -92,7 +98,6 @@ function getMultiChoice(){
                 }
             }
         }
-        console.log(userSelections);
     });
 }
 
@@ -148,7 +153,6 @@ function resetAnswers(){
 //save the recipe response data in a global variable and display the initial recipe
 function setRecipeResponse(responseJson){
     console.log('saving recipe response data')
-    console.log(responseJson);
     recipe_response = responseJson;
     renderRecipe();
 }
@@ -171,7 +175,6 @@ function setNextRecipe(){
     $('.food-choices').on('click', '.js-next-recipe', function(){
         console.log('preparing to display next recipe');
         NUM_DISPLAY++;
-        console.log(NUM_DISPLAY);
         if(NUM_DISPLAY % MAX_RESULTS === 0){ //if we've displayed the max recipes the app should display at once
             getRestaurants();
         }else if(!recipe_response.hits[NUM_DISPLAY]){ //if we've displayed all recipes
@@ -190,7 +193,6 @@ function setNextRecipe(){
 function fetchDesc(name){
     console.log('getting wikipedia description');
     let url = URL_WIKI + encodeURIComponent(name);
-    console.log(url);
     fetch(url)
         .then(response => {
             if (response.ok){ 
@@ -259,7 +261,6 @@ function formatStatusString(){
                 restaurantText.push(`<b>` + item.id + `</b>`);
             }
         });
-        console.log(withText);
         if(dietText.length){
             helperText += dietText.join(", ");
         }
@@ -284,7 +285,6 @@ function formatStatusString(){
 function setCityID(cityID){
     console.log('adding city to api key')
     restaurant_api_call += '&entity_id=' + cityID + `&entity_type=city&count=` + MAX_RESULTS;
-    console.log(restaurant_api_call);
 }
 
 //fetch restaurants with api
@@ -303,12 +303,10 @@ function getRestaurants(){
     })
     .then(responseJson => renderRestaurants(responseJson))
     .catch(err => console.log(`Description can't be retrived. Error: ${err.message}`));  
-    console.log(restaurant_api_call);   
 }
 
 //display restaurants to user and allow them to redo choices if desired
 function renderRestaurants(responseJson){
-    console.log(responseJson);
     $('header').html("<h2>You should eat out!</h2>");
     $('.js-header').html(RESTAURANT_MESSAGE);
     if(responseJson.restaurants.length){

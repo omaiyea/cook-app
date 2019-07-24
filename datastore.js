@@ -72,7 +72,7 @@ const FOLLOWUP_QUESTIONS = [
 ];
 
 //used to generate yes/no answers for the yes/no questions
-const YES_NO_RADIO = `<input type="radio" name="yesNo" value="Yes" required><label for="Yes">Yes</label>
+const YES_NO_RADIO = `<input type="radio" name="yesNo" value="Yes"><label for="Yes">Yes</label>
 <input type="radio" name="yesNo" value="No"><label for="No">No</label>`;
 
 //object for each answer to be mapped to questions and query parameters to get data from differentn apis
