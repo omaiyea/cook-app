@@ -113,7 +113,7 @@ fieldset{
 }
 
 .location label{
-    display: block;
+    display: inline-block;
 }
 /*style input boxes when user is selecting city*/
 .text-inputs label{
