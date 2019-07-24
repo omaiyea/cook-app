@@ -13,6 +13,7 @@ function renderApp(){
 function renderQuestion(){
     $('.food-preferences').on('click', '.js-next-question', function(event){
         event.preventDefault();
+        console.log($(this).siblings().children());
         $('header').empty();
         console.log('renderQuestion ran');
         $('.food-preferences').html(generateQuestion());
@@ -56,7 +57,7 @@ function generateMultipleChoices(){
     }
     let qaData = QUESTIONS_AND_ANSWERS.find(a => a.qid === QUESTION_COUNTER);
     qaData.answer.options.forEach(function(option){
-        multiChoiceHTML += `<input type="checkbox" id="` + option + `" name="` + QUESTIONS_AND_ANSWERS.indexOf(qaData) + `" type="${QUESTIONS[QUESTION_COUNTER].type}">
+        multiChoiceHTML += `<input type="checkbox" id="` + option + `" name="` + QUESTIONS_AND_ANSWERS.indexOf(qaData) + `" type="${QUESTIONS[QUESTION_COUNTER].type}" required>
         <label for="` + option + `">` + option + `</label>`;
     });
     multiChoiceHTML += `</fieldset>`; //closes fieldset for both yes/no and multichoice questions
