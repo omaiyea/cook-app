@@ -19,6 +19,8 @@ Recipe Page:
 jQuery, JavaScript, Git, HTML, and CSS
 
 ## Future Enhancements
+* Add loading screen when fetching data
+* Prevent users from going to recipe that doesn't exist on website anymore
 * Automated Testing
 * Allow users to enter their own ingredients to include/exclude in the recipe
 * Filter by meal type (currently not working in the API this uses) 
