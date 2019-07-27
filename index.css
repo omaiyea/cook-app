@@ -178,6 +178,7 @@ header img{
 
 .next-buttons{
     display: flex;
+    justify-content: space-around;
     padding: 9px 0px;
 }
 
@@ -185,6 +186,13 @@ header img{
     width: 45%;
 }
 
+.loading-image{
+
+}
+
+.hide{
+    display: none;
+}
 /****desktop/larging screen styling****/
 @media only screen and (min-width: 800px){
     input[type="submit"], button{

@@ -326,6 +326,12 @@ function renderRestaurants(responseJson){
     $('.js-recipe-link').append(RESTAURANT_NEXT_BUTTONS);
 }
 
+function renderLoadingIcon(){
+   /* $(window).load(function() {
+		$('.loading-image').removeClass('hide');
+	});*/
+}
+
 function handleCookApp(){
     renderApp();
     renderQuestion();
@@ -333,6 +339,7 @@ function handleCookApp(){
     getMultiChoice();
     getUserLocation();
     setNextRecipe();
+    renderLoadingIcon();
 }
 
 //run after the page loads
