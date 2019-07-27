@@ -54,10 +54,16 @@ b{
 
 /*center text and remove default padding*/
 body{
-    text-align: center;
-    margin: 0px 0px 20px 0px;
+    margin: 0px auto 20px auto;
     padding: 0;
     background-color: #ffe64e;
+    text-align: center;
+}
+
+/*need to center legend like this or else centering won't work on firefox*/
+legend{
+    display: block;
+    margin: auto;
 }
 
 /***form styles***/
