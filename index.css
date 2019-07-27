@@ -186,13 +186,6 @@ header img{
     width: 45%;
 }
 
-.loading-image{
-
-}
-
-.hide{
-    display: none;
-}
 /****desktop/larging screen styling****/
 @media only screen and (min-width: 800px){
     input[type="submit"], button{

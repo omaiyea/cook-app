@@ -9,13 +9,6 @@ function renderApp(){
     $('input[type="submit"]').prop('value', "Let's Start!");
 }
 
-function submitform() {
-    var f = document.getElementsByTagName('form')[0];
-    if(!f.checkValidity()) {
-      alert(document.getElementById('example').validationMessage);
-    }
-  }
-
 //displays each question to page
 function renderQuestion(){
     $('.food-preferences').on('click', '.js-next-question', function(event){
@@ -163,9 +156,13 @@ function renderRecipe(){
     $('header').html("<h2>You should cook:</h2>");
     $('.food-preferences').empty();
     fetchDesc(recipe_response.hits[NUM_DISPLAY].recipe.label);
-    $('.js-header').html(`
-        <img src="` + recipe_response.hits[NUM_DISPLAY].recipe.image + `" alt="` + recipe_response.hits[NUM_DISPLAY].recipe.label + ` picture">
-        <h3>` + recipe_response.hits[NUM_DISPLAY].recipe.label + `</h3>`);
+    if(recipe_response.hits[NUM_DISPLAY].recipe.image){
+        $('.js-header').html(`
+        <img src="` + recipe_response.hits[NUM_DISPLAY].recipe.image + `" alt="` + recipe_response.hits[NUM_DISPLAY].recipe.label + ` picture">`);
+    }else{
+        $('.js-header').html(`<sup>image unavilable</sup>`);
+    }
+    $('.js-header').append(`<h3>` + recipe_response.hits[NUM_DISPLAY].recipe.label + `</h3>`);
     $('.js-recipe-link').html(RECIPE_NEXT_BUTTONS);
     $('.js-recipe').attr("formaction", recipe_response.hits[NUM_DISPLAY].recipe.url);
 }
@@ -326,12 +323,6 @@ function renderRestaurants(responseJson){
     $('.js-recipe-link').append(RESTAURANT_NEXT_BUTTONS);
 }
 
-function renderLoadingIcon(){
-   /* $(window).load(function() {
-		$('.loading-image').removeClass('hide');
-	});*/
-}
-
 function handleCookApp(){
     renderApp();
     renderQuestion();
@@ -339,7 +330,6 @@ function handleCookApp(){
     getMultiChoice();
     getUserLocation();
     setNextRecipe();
-    renderLoadingIcon();
 }
 
 //run after the page loads
