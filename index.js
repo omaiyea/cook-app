@@ -13,9 +13,11 @@ function renderApp(){
 function renderQuestion(){
     $('.food-preferences').on('click', '.js-next-question', function(event){
         event.preventDefault();
-        $('header').empty();
         console.log('renderQuestion ran');
+
+        $('header').empty();
         $('.food-preferences').html(generateQuestion());
+
         QUESTION_COUNTER++;
     });
 }
@@ -23,8 +25,10 @@ function renderQuestion(){
 //creates HTML to display question
 function generateQuestion(){
     console.log('generating question');
+
     let questionHTML = '';
     let helperText = formatStatusString();
+
     //todo: update this so it's less repetitive
     if(QUESTIONS[QUESTION_COUNTER].type === "yesNo"){
         questionHTML += `<form class="food-pref-input"><fieldset name="initialQuestion">
@@ -42,14 +46,17 @@ function generateQuestion(){
         questionHTML += CITY + STATE + `</fieldset>`;
         questionHTML += LAST_BUTTON + `</form>`;
     }
+
     return questionHTML;
 }
 
 //generates multiple choice answers
 function generateMultipleChoices(){
     console.log('generating multiple choice options');
+
     let multiChoiceHTML = '';
     let classVal = '';
+
     //yes no multiple choice answers will be hidden by default
     if(QUESTIONS[QUESTION_COUNTER].type === "yesNo"){
         multiChoiceHTML += `<fieldset name="secondQuestion">`;
@@ -60,6 +67,7 @@ function generateMultipleChoices(){
         <label for="` + option + `">` + option + `</label>`;
     });
     multiChoiceHTML += `</fieldset>`; //closes fieldset for both yes/no and multichoice questions
+    
     return multiChoiceHTML;
 }
 
@@ -68,11 +76,13 @@ function getYesNo(){
     //currently all radi buutons may display additional qns
     $('.food-preferences').on('click', 'input[type="radio"]:checked', function(event){
         console.log('getting yes/no values and hiding/showing additional options');
+       
         if($(this).val() === "Yes"){
             $('.multi-choices').removeClass("hidden");
         }else if($(this).val() === "No"){
             $('.multi-choices').addClass("hidden");
         }
+
     });
 }
 
@@ -81,6 +91,7 @@ function getYesNo(){
 function getMultiChoice(){
     $('.food-preferences').on('click', 'input[type="checkbox"]', function(){
         console.log('getting multiple choice answers');
+
         if($(this).is(":checked")){
             userSelections.push(this);
         }else if($(this).is(":not(:checked)")){ //if unchecked
@@ -101,8 +112,10 @@ function getUserLocation(){
     $('.food-preferences').on('submit', '.location', function(){
         event.preventDefault();
         console.log('storing location');
+
         let city = $('input[type="text"]').val();
         let state = $('#state').val();
+
         getCityId(city, state);
         getRecipes();
     });
@@ -111,8 +124,11 @@ function getUserLocation(){
 //to get restaurant data, need city ID from zomato 
 function getCityId(city, state){
     let url = BASE_URL_CITY + LOCATION.param + `=` + encodeURIComponent(city) + '%2C%20' + encodeURIComponent(state);
+    
     fetch(url, RESTAURANT_OPTIONS)
-        .then(response => response.json())
+        .then(function(response) {
+            return response.json()
+        })        
         .then(responseJson => (setCityID(responseJson.location_suggestions[0].id)))
         .catch(err => $('.food-preferences').text(`Something went wrong: ${err.message}`));
 }
@@ -120,10 +136,16 @@ function getCityId(city, state){
 //fetch recipe response data
 function getRecipes(){
     console.log('getRecipes ran');
-    $('.food-preferences').empty();
     formatQueryParams();
+
+    $('.food-preferences').empty();
+    $('.loading').html(`<h3>Loading your next favorite dish...</h3>`);
+    $('.loading').removeClass("hidden");
+
     fetch(recipe_api_call)
-    .then(response => response.json())
+    .then(function(response) {
+        return response.json()
+    })
     .then(responseJson => setRecipeResponse(responseJson))
     .catch(err => {
         $('.food-preferences').html(`<p>Oops! Something went wrong: ${err.message}.<br>
@@ -136,25 +158,32 @@ function getRecipes(){
 function resetAnswers(){
     console.log('resetting answers');
     $('.food-choices').empty();
+
     QUESTION_COUNTER = 0;
     NUM_DISPLAY = 0;
     userSelections = [];
+
     $('.food-preferences').append(BUTTON);
     $('input[type="submit"]').prop('value', "Redo!"); 
 }
 
 //save the recipe response data in a global variable and display the initial recipe
 function setRecipeResponse(responseJson){
-    console.log('saving recipe response data')
+    console.log('saving recipe response data');
+
     recipe_response = responseJson;
+
     renderRecipe();
 }
 
 //display dishes and a link to their recipe
 function renderRecipe(){
     console.log('render recipes ran');
+
+    $('.loading').addClass("hidden");
     $('header').html("<h2>You should cook:</h2>");
     $('.food-preferences').empty();
+
     fetchDesc(recipe_response.hits[NUM_DISPLAY].recipe.label);
     if(recipe_response.hits[NUM_DISPLAY].recipe.image){
         $('.js-header').html(`
@@ -162,6 +191,7 @@ function renderRecipe(){
     }else{
         $('.js-header').html(`<sup>image unavilable</sup>`);
     }
+
     $('.js-header').append(`<h3>` + recipe_response.hits[NUM_DISPLAY].recipe.label + `</h3>`);
     $('.js-recipe-link').html(RECIPE_NEXT_BUTTONS);
     $('.js-recipe').attr("formaction", recipe_response.hits[NUM_DISPLAY].recipe.url);
@@ -171,7 +201,9 @@ function renderRecipe(){
 function setNextRecipe(){
     $('.food-choices').on('click', '.js-next-recipe', function(){
         console.log('preparing to display next recipe');
+
         NUM_DISPLAY++;
+
         if(NUM_DISPLAY % MAX_RESULTS === 0){ //if we've displayed the max recipes the app should display at once
             getRestaurants();
         }else if(!recipe_response.hits[NUM_DISPLAY]){ //if we've displayed all recipes
@@ -189,7 +221,9 @@ function setNextRecipe(){
 //search wikipedia api to get description of dish
 function fetchDesc(name){
     console.log('getting wikipedia description');
+
     let url = URL_WIKI + encodeURIComponent(name);
+
     fetch(url)
         .then(response => {
             if (response.ok){ 
@@ -207,12 +241,14 @@ function fetchDesc(name){
 
 //add the description of the dish to the page
 function setDesc(description, link){
-    console.log('setting wikipedia desciption')
+    console.log('setting wikipedia desciption');
+
     if(description){
         recipe_desc = `<p>"` + description + `" (<a href="` + link + `">source</a>)</p>`;
     }else{
         recipe_desc = "<p>A yummy dish!</p>";
     }
+
     $('.js-description').html(recipe_desc);
 }
 
@@ -220,9 +256,11 @@ function setDesc(description, link){
 //todo: separate to separate functions?
 function formatQueryParams(){
     console.log(`formatQueryParams ran`);
+
     recipe_api_call += 'app_id=' + app_id_recipe + '&app_key=' + app_key_recipe;
     let ingredients = [];
     let cuisine = [];
+
     userSelections.forEach(function(item){
         //ingredients/q need to be comma separated to search for recipes that include them
          if(QUESTIONS_AND_ANSWERS[item.name].answer.paramRecipe === 'q'){ 
@@ -235,6 +273,7 @@ function formatQueryParams(){
     })
     ingredients.join(',');
     cuisine.join(',');
+
     recipe_api_call += `&q=` + ingredients;
     restaurant_api_call += '&cuisine=' + cuisine;
 }
@@ -246,6 +285,7 @@ function formatStatusString(){
     let dietText = [];
     let withoutText = [];
     let restaurantText = [];
+
     if(userSelections.length){ 
         userSelections.forEach(function(item){
             if(QUESTIONS_AND_ANSWERS[item.name].answer.paramRecipe === 'q'){
@@ -274,23 +314,29 @@ function formatStatusString(){
     }else{
         helperText = QUESTION_HELPER;
     }
+
     return helperText;
 }
 
 //add city ID to API call and limit data returned
 //future: rewrite so all restaurant params are together/separate from recipe
 function setCityID(cityID){
-    console.log('adding city to api key')
+    console.log('adding city to api key');
+
     restaurant_api_call += '&entity_id=' + cityID + `&entity_type=city&count=` + MAX_RESULTS;
 }
 
 //fetch restaurants with api
 function getRestaurants(){
     console.log('getting restaurants');
+
+    $('header').empty();
     $('.food-preferences').empty();
     $('.js-header').empty();
     $('.js-description').empty();
     $('.js-recipe-link').empty();
+    $('.loading').removeClass("hidden");
+
     fetch(restaurant_api_call, RESTAURANT_OPTIONS)
     .then(response => {
         if (response.ok){ 
@@ -304,8 +350,10 @@ function getRestaurants(){
 
 //display restaurants to user and allow them to redo choices if desired
 function renderRestaurants(responseJson){
+    $('.loading').addClass("hidden");
     $('header').html("<h2>You should eat out!</h2>");
     $('.js-header').html(RESTAURANT_MESSAGE);
+
     if(responseJson.restaurants.length){
         $('.js-description').html(RESTAURANT_INTRO);
         //future: iterate through next set of five rstaurants

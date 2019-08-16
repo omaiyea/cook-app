@@ -153,6 +153,7 @@ header img{
 }
 
 /*some form elements need to be hidden by default*/
+/*also hide any sections that don't need to be shown*/
 .hidden{
     overflow: hidden;
     opacity: 0;   
@@ -186,6 +187,10 @@ header img{
     width: 45%;
 }
 
+.loading h3{
+    padding-top: 5em;
+}
+
 /****desktop/larging screen styling****/
 @media only screen and (min-width: 800px){
     input[type="submit"], button{
@@ -216,6 +221,7 @@ header img{
         padding: 10px 20px;
         position: relative;
         line-height: 1.5;
+        filter: drop-shadow(0 0 0.1rem black);
     }
 
     .location input[type="text"] {
