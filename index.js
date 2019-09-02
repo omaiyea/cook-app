@@ -16,6 +16,7 @@ function renderQuestion(){
         console.log('renderQuestion ran');
 
         $('header').empty();
+        window.scrollTo(0,0); //need to add this otherwise focus for questions is occasionally on bottom of screen
         $('.food-preferences').html(generateQuestion());
 
         QUESTION_COUNTER++;

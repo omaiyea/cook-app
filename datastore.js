@@ -43,7 +43,7 @@ const NEXT_BUTTON = `<input type="submit" value="Next" class="js-next-question">
 const LAST_BUTTON = `<input type="submit" value="Show Me Recipes" class="js-last-question">`;
 
 /*welcome screen vars*/
-const APP_TITLE = `<h2>(What) Should I Cook?</h2>`;
+const APP_TITLE = `<h2>What Should I Cook?</h2>`;
 const WELCOME_MESSAGE = `<p><b>Hangry and indecisive?</b></p>
 <p>Stop endlessly scrolling through the same food pictures until your blood sugar is too low for you to get up and grab your charger!</p>
 <p>Let's figure out what you should cook, or if you should just order takeout again.</p>`;
