@@ -9,7 +9,6 @@ let NUM_DISPLAY = 0;
 const BASE_URL_RECIPE = 'https://api.edamam.com/search?';
 const app_id_recipe = 'c83687e4'; //app_id
 const app_key_recipe = '12c994934055b08b39c25e680c1e6973'; //app_key
-//https://api.edamam.com/search?app_id=c83687e4&app_key=12c994934055b08b39c25e680c1e6973&q=chicken&q=tomatoes&dietLabels=low-carb&excluded=beef
 
 const BASE_URL_CITY = 'https://developers.zomato.com/api/v2.1/cities?';
 const BASE_URL_RESTAURANT = 'https://developers.zomato.com/api/v2.1/search?';
@@ -22,8 +21,6 @@ const RESTAURANT_OPTIONS = {
 //will be used to get descriptions for dishes since recipe api doesn't have
 //expects exact match
 const URL_WIKI = 'https://en.wikipedia.org/w/api.php?action=opensearch&utf8=&format=json&origin=*&search=';
-//less specific
-//const URL_WIKI = 'https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&utf8=1&srsearch=';
 
 //to be built in index.js
 let userSelections = [];
@@ -82,13 +79,6 @@ const HEALTH_ANSWERS = {
     paramRecipe: "healthLabels", 
     options: ["vegan", "vegetarian", "paleo", "pescatarian", "gluten-free", "keto", "low-sugar"]
 };
-
-//to end user diet and health are likely the same but in API they are treated differently
-//next iteration figure out how to do this 
-/*const DIET_ANSWERS = {
-    paramRecipe: "dietLabels",
-    options: ["balanced", "high-protein", "high-fiber", "low-fat", "low-carb", "low-sodium"]
-};*/
 
 const CUISINE_ANSWERS = {
     paramRestaurant: "cuisine", 
