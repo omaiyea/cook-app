@@ -44,9 +44,10 @@ const APP_TITLE = `<h2>What Should I Cook?</h2>`;
 const WELCOME_MESSAGE = `<p><b>Hangry and indecisive?</b></p>
 <p>Stop endlessly scrolling through the same food pictures until your blood sugar is too low for you to get up and grab your charger!</p>
 <p>Let's figure out what you should cook, or if you should just order takeout again.</p>`;
-const INSTRUCTIONS = `<p>1) Answer some easy questions.<br>
-2) We'll show you some awesome recipes.<br>
-3) If you can't decide what to cook, we'll show you some of the best places to eat out instead!</p>`;
+const INSTRUCTIONS = `
+<p><i class="fas fa-question-circle fa-2x"></i>Answer some easy questions.</p>
+<p><i class="fas fa-list-alt fa-2x"></i>We'll show you awesome recipes.</p>
+<p><i class="fas fa-utensils fa-2x"></i>If you can't decide, eat out instead!</p>`;
 const QUESTION_HELPER = `<sup>If more than one answer applies, select them all!</sup>`;
 const HEADER_IMAGE = `<img src="bg-pic.jpg" alt="fruit bowl picture">`;
 

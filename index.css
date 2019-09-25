@@ -30,6 +30,10 @@ p, ol{
     font-size: 1.7em;
 }
 
+.instructions p{
+    font-size: 1.5em;
+}
+
 input, label, select{
     font-size: 1.5em;
 }
@@ -49,7 +53,8 @@ sup{
 }
 
 b{
-    font-weight: bolder;
+    font-weight: 900;
+    font-size: 1.4em;
 }
 
 /*center text and remove default padding*/
@@ -104,16 +109,14 @@ legend{
 /*style buttons throughout the app */
 input[type="submit"], button{
     display: block;
-    margin: auto;
+    margin: 5px auto 0px auto;
     width: 70%;
     background-color: #000;
     border: 1px solid #000;
-    padding: 5px 3px;
     color: white;
     font-size: 2em;
     border-radius: 20px;
-    margin-top: 5px;
-    padding: 7px 0px;
+    padding: 12px 0px;
 }
 
 input[type="submit"]:hover, button:hover{
@@ -166,11 +169,14 @@ header img{
     color: #3b3838;
 }
 
+.instructions i{
+    display: block;
+}
+
 .subtitle{
-    padding: 3px 0px;
     background-color: #620D7D;
     color: #fff;
-    padding-bottom: 15px;
+    padding: 30px 0px 30px 0px;
 }
 
 .start-button{
@@ -218,14 +224,25 @@ header img{
     .instructions{
         background-color: #620D7D;
         color: #fff;
-        padding: 10px 20px;
+        padding: 20px 20px;
         position: relative;
         line-height: 1.5;
         filter: drop-shadow(0 0 0.1rem black);
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 10px;
+    }
+
+    .instructions p{
+        width: 33%;
     }
 
     .location input[type="text"] {
         width: 30%;
+    }
+
+    legend{
+        width: 70%;
     }
     
 }
