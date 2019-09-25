@@ -1,6 +1,5 @@
 //render initial welcome screen
 function renderApp(){
-    console.log('renderApp ran');
     $('.title').html(APP_TITLE);
     $('.image').html(HEADER_IMAGE);
     $('.subtitle').html(WELCOME_MESSAGE);
@@ -13,7 +12,6 @@ function renderApp(){
 function renderQuestion(){
     $('.food-preferences').on('click', '.js-next-question', function(event){
         event.preventDefault();
-        console.log('renderQuestion ran');
 
         $('header').empty();
         window.scrollTo(0,0); //need to add this otherwise focus for questions is occasionally on bottom of screen
@@ -25,7 +23,6 @@ function renderQuestion(){
 
 //creates HTML to display question
 function generateQuestion(){
-    console.log('generating question');
 
     let questionHTML = '';
     let helperText = formatStatusString();
@@ -53,7 +50,6 @@ function generateQuestion(){
 
 //generates multiple choice answers
 function generateMultipleChoices(){
-    console.log('generating multiple choice options');
 
     let multiChoiceHTML = '';
     let classVal = '';
@@ -76,7 +72,6 @@ function generateMultipleChoices(){
 function getYesNo(){
     //currently all radi buutons may display additional qns
     $('.food-preferences').on('click', 'input[type="radio"]:checked', function(event){
-        console.log('getting yes/no values and hiding/showing additional options');
        
         if($(this).val() === "Yes"){
             $('.multi-choices').removeClass("hidden");
@@ -91,8 +86,6 @@ function getYesNo(){
 //maybe the values could be selected on submit but I was having issues with that and iterating through the questions at the same time
 function getMultiChoice(){
     $('.food-preferences').on('click', 'input[type="checkbox"]', function(){
-        console.log('getting multiple choice answers');
-
         if($(this).is(":checked")){
             userSelections.push(this);
         }else if($(this).is(":not(:checked)")){ //if unchecked
@@ -112,7 +105,6 @@ function getMultiChoice(){
 function getUserLocation(){
     $('.food-preferences').on('submit', '.location', function(){
         event.preventDefault();
-        console.log('storing location');
 
         let city = $('input[type="text"]').val();
         let state = $('#state').val();
@@ -136,7 +128,6 @@ function getCityId(city, state){
 
 //fetch recipe response data
 function getRecipes(){
-    console.log('getRecipes ran');
     formatQueryParams();
 
     $('.food-preferences').empty();
@@ -149,15 +140,15 @@ function getRecipes(){
     })
     .then(responseJson => setRecipeResponse(responseJson))
     .catch(err => {
-        $('.food-preferences').html(`<p>Oops! Something went wrong: ${err.message}.<br>
+        $('.food-preferences').html(`<p>Oops! Something went wrong.<br>
         Try starting over with more general answers or making sure you've selected at least one ingredient.</p>`);
+        console.log(err.message);
         resetAnswers();
     })
 }
 
 //allows user to redo food preferences questions
 function resetAnswers(){
-    console.log('resetting answers');
     $('.food-choices').empty();
 
     QUESTION_COUNTER = 0;
@@ -170,8 +161,6 @@ function resetAnswers(){
 
 //save the recipe response data in a global variable and display the initial recipe
 function setRecipeResponse(responseJson){
-    console.log('saving recipe response data');
-
     recipe_response = responseJson;
 
     renderRecipe();
@@ -179,8 +168,6 @@ function setRecipeResponse(responseJson){
 
 //display dishes and a link to their recipe
 function renderRecipe(){
-    console.log('render recipes ran');
-
     $('.loading').addClass("hidden");
     $('header').html("<h2>You should cook:</h2>");
     $('.food-preferences').empty();
@@ -201,8 +188,6 @@ function renderRecipe(){
 //call next recipe or set error message
 function setNextRecipe(){
     $('.food-choices').on('click', '.js-next-recipe', function(){
-        console.log('preparing to display next recipe');
-
         NUM_DISPLAY++;
 
         if(NUM_DISPLAY % MAX_RESULTS === 0){ //if we've displayed the max recipes the app should display at once
@@ -221,8 +206,6 @@ function setNextRecipe(){
 
 //search wikipedia api to get description of dish
 function fetchDesc(name){
-    console.log('getting wikipedia description');
-
     let url = URL_WIKI + encodeURIComponent(name);
 
     fetch(url)
@@ -242,8 +225,6 @@ function fetchDesc(name){
 
 //add the description of the dish to the page
 function setDesc(description, link){
-    console.log('setting wikipedia desciption');
-
     if(description){
         recipe_desc = `<p>"` + description + `" (<a href="` + link + `">source</a>)</p>`;
     }else{
@@ -256,8 +237,6 @@ function setDesc(description, link){
 //format restaurant and recipe query params
 //todo: separate to separate functions?
 function formatQueryParams(){
-    console.log(`formatQueryParams ran`);
-
     recipe_api_call += 'app_id=' + app_id_recipe + '&app_key=' + app_key_recipe;
     let ingredients = [];
     let cuisine = [];
@@ -322,15 +301,11 @@ function formatStatusString(){
 //add city ID to API call and limit data returned
 //future: rewrite so all restaurant params are together/separate from recipe
 function setCityID(cityID){
-    console.log('adding city to api key');
-
     restaurant_api_call += '&entity_id=' + cityID + `&entity_type=city&count=` + MAX_RESULTS;
 }
 
 //fetch restaurants with api
 function getRestaurants(){
-    console.log('getting restaurants');
-
     $('header').empty();
     $('.food-preferences').empty();
     $('.js-header').empty();

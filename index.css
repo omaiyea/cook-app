@@ -111,14 +111,14 @@ legend h2{
 /*style buttons throughout the app */
 input[type="submit"], button{
     display: block;
-    margin: 5px auto 0px auto;
+    margin: 5px auto 2px auto;
     width: 70%;
     background-color: #000;
     border: 1px solid #000;
     color: white;
     font-size: 2em;
     border-radius: 20px;
-    padding: 12px 0px;
+    padding: 10px 0px 12px 7px; /*for some reason, left and topis off center*/
 }
 
 input[type="submit"]:hover, button:hover{
@@ -242,12 +242,17 @@ header img{
         width: 33%;
     }
 
+    .food-choices {
+        width: 80%;
+        margin: 0px auto;
+    }
+
     .location input[type="text"] {
         width: 30%;
     }
 
     legend{
-        width: 70%;
+        width: 80%;
     }
     
 }

@@ -50,7 +50,7 @@ const INSTRUCTIONS = `
 <p><i class="fas fa-list-alt fa-2x"></i>We'll show you awesome recipes.</p>
 <p><i class="fas fa-utensils fa-2x"></i>If you can't decide, eat out instead!</p>`;
 const QUESTION_HELPER = `<sup>If more than one answer applies, select them all!</sup>`;
-const HEADER_IMAGE = `<img src="bg-pic.jpg" alt="fruit bowl picture">`;
+const HEADER_IMAGE = `<img src="bg-pic.png" alt="fruit bowl picture">`;
 
 /*vars to get user's preferences*/
 
